@@ -60,15 +60,23 @@ public class Pilha <T>{
         }
     }
 
-    public void push(T novo) throws Exception{
+    public void push(T dado) throws Exception{
         if(isFull()){
              throw new Exception("Pilha Cheia");
         }
 
+        No novo = new No(dado);
+
         if(cabeca == null){
             cabeca = novo;
             calda = novo;
+        } else {
+            calda.prox = novo;
+            calda = novo;
         }
+
+        tam++;
     }
+
 
 }
