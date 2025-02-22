@@ -1,6 +1,7 @@
 package com.jogodamas.controller;
 
 
+import com.jogodamas.domain.Tabuleiro;
 import com.jogodamas.dto.PossiveisJogadas;
 import com.jogodamas.domain.Coordenada;
 import com.jogodamas.services.Calculador;
@@ -10,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping
 public class Jogo {
-
-
+    Tabuleiro tabuleiro = new Tabuleiro();
 
     @PostMapping("/moverpeca")
     public ResponseEntity<String>moverPeca(){
@@ -20,12 +20,18 @@ public class Jogo {
 
     @GetMapping("/movimentospossiveis")
     public ResponseEntity movimentosPossiveis( @RequestParam int id){
-        Calculador calculador = new Calculador();
-        PossiveisJogadas possiveisJogadas = new PossiveisJogadas();
+        tabuleiro.exibirTabuleiro();
 
-        possiveisJogadas.addAllCoordenada(calculador.calcularPossiveisJogadas());
 
-        return ResponseEntity.ok(possiveisJogadas.getCoordenadas());
+
+        //Calculador calculador = new Calculador();
+        //PossiveisJogadas possiveisJogadas = new PossiveisJogadas();
+
+        //possiveisJogadas.addAllCoordenada(calculador.calcularPossiveisJogadas(tabuleiro.buscarCordenadasPecaPorID(id)));
+
+        //return ResponseEntity.ok(possiveisJogadas.getCoordenadas());
+
+        return ResponseEntity.ok(tabuleiro.buscarCordenadasPecaPorID(id));
 
     }
 
