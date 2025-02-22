@@ -12,23 +12,7 @@ public class Tabuleiro {
         jogador2 = new Jogador();
         tabuleiro = new Peca[8][8];
 
-        int contador = 0;
-
-        // Preenche tabuleiro com as peças
-        for(int i=0; i<8; i++){
-            for(int j=0; j<8; j++){
-
-                if(i == 3 || i == 4){
-                    continue;
-                }
-
-                if(i % 2 == 0 && j % 2 == 1){
-                    tabuleiro[i][j] = new Peca(contador++, new Coordenada(i,j));
-                } else if(i % 2 == 1 && j % 2 == 0) {
-                    tabuleiro[i][j] = new Peca(contador++, new Coordenada(i,j));
-                }
-            }
-        }
+        resetarTabuleiro();
     }
 
     public Coordenada buscarCordenadasPecaPorID(int id){
@@ -57,6 +41,27 @@ public class Tabuleiro {
                 }
             }
             System.out.println();
+        }
+    }
+
+    public void resetarTabuleiro(){
+        int contador = 0;
+
+        // Preenche tabuleiro com as peças
+        for(int i=0; i<8; i++){
+            for(int j=0; j<8; j++){
+
+                if(i == 3 || i == 4){
+                    tabuleiro[i][j] = null;
+                    continue;
+                }
+
+                if(i % 2 == 0 && j % 2 == 1){
+                    tabuleiro[i][j] = new Peca(contador++, new Coordenada(i,j));
+                } else if(i % 2 == 1 && j % 2 == 0) {
+                    tabuleiro[i][j] = new Peca(contador++, new Coordenada(i,j));
+                }
+            }
         }
     }
 }

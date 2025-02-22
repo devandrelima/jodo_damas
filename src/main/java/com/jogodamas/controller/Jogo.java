@@ -22,21 +22,16 @@ public class Jogo {
     public ResponseEntity movimentosPossiveis( @RequestParam int id){
         tabuleiro.exibirTabuleiro();
 
+        Calculador calculador = new Calculador();
+        PossiveisJogadas possiveisJogadas = new PossiveisJogadas();
 
+        possiveisJogadas.addAllCoordenada(calculador.calcularPossiveisJogadas(tabuleiro.buscarCordenadasPecaPorID(id)));
 
-        //Calculador calculador = new Calculador();
-        //PossiveisJogadas possiveisJogadas = new PossiveisJogadas();
-
-        //possiveisJogadas.addAllCoordenada(calculador.calcularPossiveisJogadas(tabuleiro.buscarCordenadasPecaPorID(id)));
-
-        //return ResponseEntity.ok(possiveisJogadas.getCoordenadas());
-
-        return ResponseEntity.ok(tabuleiro.buscarCordenadasPecaPorID(id));
-
+        return ResponseEntity.ok(possiveisJogadas.getCoordenadas());
     }
 
     @PutMapping("/reset")
     public void reset(){
-
+        tabuleiro.resetarTabuleiro();
     }
 }
