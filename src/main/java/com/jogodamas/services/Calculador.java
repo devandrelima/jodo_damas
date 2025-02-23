@@ -2,10 +2,10 @@ package com.jogodamas.services;
 
 import com.jogodamas.domain.Coordenada;
 import com.jogodamas.domain.Peca;
-import com.jogodamas.domain.Tabuleiro;
+import com.jogodamas.domain.Jogo;
 
 public class Calculador {
-    public Coordenada[] calcularPossiveisJogadas(int id, Tabuleiro tabuleiro) {
+    public Coordenada[] calcularPossiveisJogadas(int id, Jogo tabuleiro) {
         Peca pecaAtual = tabuleiro.buscarPecaPorID(id);
         Coordenada coordenadasCalculadas[] = new Coordenada[31];
 
@@ -39,7 +39,7 @@ public class Calculador {
         return maior;
     }
 
-    private Coordenada[] buscarCoordenadaDireita(Peca pecaAtual, Tabuleiro tabuleiro) {
+    private Coordenada[] buscarCoordenadaDireita(Peca pecaAtual, Jogo tabuleiro) {
         Coordenada[] coordenadas = new Coordenada[5];
         int contador = 0;
 
@@ -99,7 +99,7 @@ public class Calculador {
         return coordenadas;
     }
 
-    private Coordenada[] buscarCoordenadaEsquerda(Peca pecaAtual, Tabuleiro tabuleiro) {
+    private Coordenada[] buscarCoordenadaEsquerda(Peca pecaAtual, Jogo tabuleiro) {
         Coordenada[] coordenadas = new Coordenada[5];
         int contador = 0;
 

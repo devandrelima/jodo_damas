@@ -1,18 +1,25 @@
 package com.jogodamas.domain;
 
-public class Tabuleiro {
+public class Jogo {
     private boolean acabou;
     private Peca tabuleiro[][];
     private Jogador jogador1;
     private Jogador jogador2;
 
-    public Tabuleiro(){
+    public Jogo(){
         acabou = false;
         jogador1 = new Jogador();
         jogador2 = new Jogador();
         tabuleiro = new Peca[8][8];
 
         resetarTabuleiro();
+    }
+
+    public void moverPeca(Coordenada proxCoordenada, Peca peca) {
+        tabuleiro[peca.getCoordenadas().getX()][peca.getCoordenadas().getY()] = null;
+        tabuleiro[proxCoordenada.getX()][proxCoordenada.getY()] = peca;
+        peca.getCoordenadas().setX(proxCoordenada.getX());
+        peca.getCoordenadas().setY(proxCoordenada.getY());
     }
 
     public Peca buscarPecaPorID(int id){
