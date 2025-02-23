@@ -25,7 +25,7 @@ public class Jogo {
         Calculador calculador = new Calculador();
         PossiveisJogadas possiveisJogadas = new PossiveisJogadas();
 
-        possiveisJogadas.addAllCoordenada(calculador.calcularPossiveisJogadas(tabuleiro.buscarCordenadasPecaPorID(id)));
+        possiveisJogadas.addAllCoordenada(calculador.calcularPossiveisJogadas(id,tabuleiro));
 
         return ResponseEntity.ok(possiveisJogadas.getCoordenadas());
     }

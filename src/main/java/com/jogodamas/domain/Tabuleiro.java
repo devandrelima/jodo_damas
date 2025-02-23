@@ -15,12 +15,12 @@ public class Tabuleiro {
         resetarTabuleiro();
     }
 
-    public Coordenada buscarCordenadasPecaPorID(int id){
+    public Peca buscarPecaPorID(int id){
         for (int i = 0; i < tabuleiro.length; i++) {
             for (int j = 0; j < tabuleiro[i].length; j++) {
                 try {
                     if(tabuleiro[i][j].getId() == id){
-                            return tabuleiro[i][j].getCoordenadas();
+                            return tabuleiro[i][j];
                     }
                 } catch (NullPointerException e) {
                     continue;
@@ -57,9 +57,9 @@ public class Tabuleiro {
                 }
 
                 if(i % 2 == 0 && j % 2 == 1){
-                    tabuleiro[i][j] = new Peca(contador++, new Coordenada(i,j));
+                    tabuleiro[i][j] = new Peca(false, contador++, new Coordenada(i,j));
                 } else if(i % 2 == 1 && j % 2 == 0) {
-                    tabuleiro[i][j] = new Peca(contador++, new Coordenada(i,j));
+                    tabuleiro[i][j] = new Peca(false, contador++, new Coordenada(i,j));
                 }
             }
         }
