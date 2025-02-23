@@ -31,6 +31,16 @@ public class Tabuleiro {
         return null;
     }
 
+    public Peca buscarPecaPorCoordenada(int x, int y){
+
+        Peca peca = tabuleiro[x][y];
+
+        if(peca == null) return null;
+
+        return peca;
+    }
+
+
     public void exibirTabuleiro(){
         for (int i = 0; i < tabuleiro.length; i++) {
             for (int j = 0; j < tabuleiro[i].length; j++) {
