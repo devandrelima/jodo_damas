@@ -126,62 +126,90 @@ public class Calculador {
     }
 
     private Coordenada[] buscarCoordenadaEsquerda(Peca pecaAtual, Jogo tabuleiro) {
-        Coordenada[] coordenadas = new Coordenada[5];
-        int contador = 0;
 
         if(!pecaAtual.isRainha()) { // Não é rainha
 
             if (pecaAtual.getId() <= 11) { // Pessoas do Jogador de Cima
-                int proxLinha = pecaAtual.getCoordenadas().getX() + 1;
-                int proxColuna = pecaAtual.getCoordenadas().getY() - 1;
 
-                if (proxLinha > 7 || proxColuna < 0) { // Não sai do tabuleiro
-                    coordenadas[contador++] = null;
-
-                    return coordenadas;
-                }
-
-                Peca proxPeca = tabuleiro.buscarPecaPorCoordenada(new Coordenada(proxLinha, proxColuna));
-
-                if(proxPeca == null) { // Não tem peça na próxima coordenada
-                    coordenadas[contador++] = new Coordenada(proxLinha,proxColuna);
-                    return coordenadas;
-
-                } else if(proxPeca.getId() >= 12){ // A próxima peca é inimiga, talvez tenha como comer ela
-                    return buscarCoordenadaDireita(proxPeca, tabuleiro);
-                } else {
-                    coordenadas[contador++] = null; // A próxima peça é amiga, não tem como pular ela
-                    return coordenadas;
-                }
+                return buscarCoordenadaEsquerdaJogadorDeCima(pecaAtual, tabuleiro, 0);
 
             } else { // Pessoas do Jogador de Baixo
 
-                int proxLinha = pecaAtual.getCoordenadas().getX() - 1;
-                int proxColuna = pecaAtual.getCoordenadas().getY() - 1;
+                return buscarCoordenadaEsquerdaJogadorDeBaixo(pecaAtual, tabuleiro, 0);
 
-                if (proxLinha < 0 || proxColuna < 0) { // Não sai do tabuleiro
-                    coordenadas[contador++] = null;
-
-                    return coordenadas;
-                }
-
-                Peca proxPeca = tabuleiro.buscarPecaPorCoordenada(new Coordenada(proxLinha, proxColuna));
-
-                if(proxPeca == null) { // Não tem peça na próxima coordenada
-                    coordenadas[contador++] = new Coordenada(proxLinha,proxColuna);
-
-                    return coordenadas;
-
-                } else if(proxPeca.getId() <= 11){ // A próxima peca é inimiga, talvez tenha como comer ela
-                    return buscarCoordenadaDireita(proxPeca, tabuleiro);
-                } else {
-                    coordenadas[contador++] = null; // A próxima peça é amiga, não tem como pular ela
-                    return coordenadas;
-                }
             }
+        } else {
+            System.out.println("Rainha ainda precisa ser construída");
         }
 
-        coordenadas[contador++] = null;
-        return coordenadas;
+        return null;
+    }
+
+    private Coordenada[] buscarCoordenadaEsquerdaJogadorDeCima(Peca pecaAtual, Jogo tabuleiro, int buscador){
+        Coordenada[] coordenadas = new Coordenada[5];
+        int contador = 0;
+
+        int proxLinha = pecaAtual.getCoordenadas().getX() + 1;
+        int proxColuna = pecaAtual.getCoordenadas().getY() - 1;
+
+        if (proxLinha > 7 || proxColuna < 0) { // Não sai do tabuleiro
+            coordenadas[contador++] = null;
+
+            return coordenadas;
+        }
+
+        Peca proxPeca = tabuleiro.buscarPecaPorCoordenada(new Coordenada(proxLinha, proxColuna));
+
+        if(proxPeca == null) { // Não tem peça na próxima coordenada
+            coordenadas[contador++] = new Coordenada(proxLinha,proxColuna);
+            return coordenadas;
+
+        } else if(proxPeca.getId() >= 12){ // A próxima peca é inimiga, talvez tenha como comer ela
+            if(buscador > 1) { // A próxima peça é inimiga e tem outra peça protegendo
+                coordenadas[0] = null;
+                return coordenadas;
+            }
+
+            return buscarCoordenadaEsquerdaJogadorDeCima(new Peca(false, pecaAtual.getId(), new Coordenada(proxLinha, proxColuna)), tabuleiro, ++buscador); // fazer varredura
+
+        } else {
+            coordenadas[contador++] = null; // A próxima peça é amiga, não tem como pular ela
+            return coordenadas;
+        }
+    }
+
+
+    private Coordenada[] buscarCoordenadaEsquerdaJogadorDeBaixo(Peca pecaAtual, Jogo tabuleiro, int buscador){
+        Coordenada[] coordenadas = new Coordenada[5];
+        int contador = 0;
+
+        int proxLinha = pecaAtual.getCoordenadas().getX() - 1;
+        int proxColuna = pecaAtual.getCoordenadas().getY() - 1;
+
+        if (proxLinha < 0 || proxColuna < 0) { // Não sai do tabuleiro
+            coordenadas[contador++] = null;
+
+            return coordenadas;
+        }
+
+        Peca proxPeca = tabuleiro.buscarPecaPorCoordenada(new Coordenada(proxLinha, proxColuna));
+
+        if(proxPeca == null) { // Não tem peça na próxima coordenada
+            coordenadas[contador++] = new Coordenada(proxLinha,proxColuna);
+
+            return coordenadas;
+
+        } else if(proxPeca.getId() <= 11){ // A próxima peca é inimiga, talvez tenha como comer ela
+            if(buscador > 1) { // A próxima peça é inimiga e tem outra peça protegendo
+                coordenadas[0] = null;
+                return coordenadas;
+            }
+
+            return buscarCoordenadaEsquerdaJogadorDeCima(new Peca(false, pecaAtual.getId(), new Coordenada(proxLinha, proxColuna)), tabuleiro, ++buscador); // fazer varredura
+
+        } else {
+            coordenadas[contador++] = null; // A próxima peça é amiga, não tem como pular ela
+            return coordenadas;
+        }
     }
 }
