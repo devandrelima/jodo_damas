@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class EndPoints {
     Jogo jogo = new Jogo();
     private Pilha<Jogada> relatorioJogadas = new Pilha<>();
+    int jogador;
 
     @PostMapping("/moverpeca")
     public ResponseEntity<Peca> moverPeca(@RequestBody Jogada jogada) throws Exception {
@@ -20,13 +21,24 @@ public class EndPoints {
 
         relatorioJogadas.push(jogada); // Guarda a jogada no relatório
 
+        jogo.exibirTabuleiro(); // Usado apenas pelo backend para jogar no console
+
+        jogador++;
         return ResponseEntity.ok(peca); // Retorno a peça com a nova posição
     }
 
     @GetMapping("/movimentospossiveis")
     public ResponseEntity movimentosPossiveis( @RequestParam int id){
-        Calculador calculador = new Calculador();
+
         PossiveisJogadas possiveisJogadas = new PossiveisJogadas();
+        Calculador calculador = new Calculador();
+
+        // Esse conjunto de ifs é para bloquear as requisições do jogador que não é a vez
+        if(jogador%2 == 0 && id <= 11){
+            return ResponseEntity.ok(possiveisJogadas.getCoordenadas());
+        } else if(jogador%2 == 1 && id >= 12){
+            return ResponseEntity.ok(possiveisJogadas.getCoordenadas());
+        }
 
         jogo.exibirTabuleiro(); // Usado apenas pelo backend para jogar no console
 
