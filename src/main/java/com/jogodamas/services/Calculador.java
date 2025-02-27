@@ -173,8 +173,11 @@ public class Calculador {
         Peca proxPeca = tabuleiro.buscarPecaPorCoordenada(new Coordenada(proxLinha, proxColuna));
 
         if(proxPeca == null) { // Não tem peça na próxima coordenada
+            if(buscador > 0) { // A varredura deu certo e pode pular o inimigo
+                coordenadas[0] = new Coordenada(proxLinha,proxColuna);
+                return coordenadas;
+            }
             coordenadas[0] = null;
-
             return coordenadas;
 
         } if(proxPeca.getId() >= 12){ // A próxima peca é inimiga, talvez tenha como comer ela
@@ -241,8 +244,11 @@ public class Calculador {
         Peca proxPeca = tabuleiro.buscarPecaPorCoordenada(new Coordenada(proxLinha, proxColuna));
 
         if(proxPeca == null) { // Não tem peça na próxima coordenada
+            if(buscador > 0) { // A varredura deu certo e pode pular o inimigo
+                coordenadas[0] = new Coordenada(proxLinha,proxColuna);
+                return coordenadas;
+            }
             coordenadas[0] = null;
-
             return coordenadas;
 
         } if(proxPeca.getId() <= 11){ // A próxima peca é inimiga, talvez tenha como comer ela
@@ -307,8 +313,11 @@ public class Calculador {
         Peca proxPeca = tabuleiro.buscarPecaPorCoordenada(new Coordenada(proxLinha, proxColuna));
 
         if(proxPeca == null) { // Não tem peça na próxima coordenada
+            if(buscador > 0) { // A varredura deu certo e pode pular o inimigo
+                coordenadas[0] = new Coordenada(proxLinha,proxColuna);
+                return coordenadas;
+            }
             coordenadas[0] = null;
-
             return coordenadas;
 
         } if(proxPeca.getId() >= 12){ // A próxima peca é inimiga, talvez tenha como comer ela
@@ -341,7 +350,7 @@ public class Calculador {
         Peca proxPeca = tabuleiro.buscarPecaPorCoordenada(new Coordenada(proxLinha, proxColuna));
 
         if(proxPeca == null) { // Não tem peça na próxima coordenada
-            coordenadas[contador++] = new Coordenada(proxLinha,proxColuna);
+            coordenadas[0] = new Coordenada(proxLinha,proxColuna);
 
             return coordenadas;
 
@@ -375,8 +384,11 @@ public class Calculador {
         Peca proxPeca = tabuleiro.buscarPecaPorCoordenada(new Coordenada(proxLinha, proxColuna));
 
         if(proxPeca == null) { // Não tem peça na próxima coordenada
+            if(buscador > 0) { // A varredura deu certo e pode pular o inimigo
+                coordenadas[0] = new Coordenada(proxLinha,proxColuna);
+                return coordenadas;
+            }
             coordenadas[0] = null;
-
             return coordenadas;
 
         } else if(proxPeca.getId() <= 11){ // A próxima peca é inimiga, talvez tenha como comer ela
