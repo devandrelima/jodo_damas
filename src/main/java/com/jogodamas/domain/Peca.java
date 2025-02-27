@@ -1,6 +1,5 @@
 package com.jogodamas.domain;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

@@ -11,15 +11,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping
 public class EndPoints {
     Jogo jogo = new Jogo();
-    private Pilha<Jogada> relatorioJogadas;
+    private Pilha<Jogada> relatorioJogadas = new Pilha<>();
 
     @PostMapping("/moverpeca")
     public ResponseEntity<Peca> moverPeca(@RequestBody Jogada jogada) throws Exception {
         Peca peca = jogo.buscarPecaPorID(jogada.id()); // Busca a peça que está sendo movida pelo id
-        jogo.moverPeca(jogada.coordenada(), peca); // Move a peça no tabuleiro
+        peca = jogo.moverPeca(jogada.coordenada(), peca); // Move a peça no tabuleiro
 
         relatorioJogadas.push(jogada); // Guarda a jogada no relatório
-        return ResponseEntity.ok(jogo.buscarPecaPorID(jogada.id())); // Retorno a peça com a nova posição
+
+        return ResponseEntity.ok(peca); // Retorno a peça com a nova posição
     }
 
     @GetMapping("/movimentospossiveis")

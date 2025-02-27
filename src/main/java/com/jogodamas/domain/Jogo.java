@@ -15,11 +15,17 @@ public class Jogo {
         resetarTabuleiro();
     }
 
-    public void moverPeca(Coordenada proxCoordenada, Peca peca) {
+    public Peca moverPeca(Coordenada proxCoordenada, Peca peca) {
+        int novoX = proxCoordenada.getX();
+        int novoY = proxCoordenada.getY();
+
         tabuleiro[peca.getCoordenadas().getX()][peca.getCoordenadas().getY()] = null;
-        tabuleiro[proxCoordenada.getX()][proxCoordenada.getY()] = peca;
-        peca.getCoordenadas().setX(proxCoordenada.getX());
-        peca.getCoordenadas().setY(proxCoordenada.getY());
+        tabuleiro[novoX][novoY] = peca;
+
+        peca.getCoordenadas().setX(novoX);
+        peca.getCoordenadas().setY(novoY);
+
+        return peca;
     }
 
     public Peca buscarPecaPorID(int id){
@@ -38,9 +44,9 @@ public class Jogo {
         return null;
     }
 
-    public Peca buscarPecaPorCoordenada(int x, int y){
+    public Peca buscarPecaPorCoordenada(Coordenada coordenada){
 
-        Peca peca = tabuleiro[x][y];
+        Peca peca = tabuleiro[coordenada.getX()][coordenada.getY()];
 
         if(peca == null) return null;
 
@@ -49,12 +55,26 @@ public class Jogo {
 
 
     public void exibirTabuleiro(){
+        System.out.println("\n\n-------------------------------\n\n");
+
         for (int i = 0; i < tabuleiro.length; i++) {
             for (int j = 0; j < tabuleiro[i].length; j++) {
                 try {
-                    System.out.print(tabuleiro[i][j].getId() + " ");
+                    int id = tabuleiro[i][j].getId();
+
+                    if(id < 10) {System.out.print(" 0" + id + " ");}
+                    else {System.out.print(" " + id + " ");}
+
                 } catch (NullPointerException e) {
-                    System.out.print( "[]");
+                    if(i % 2 == 0 && j % 2 == 1){
+                        System.out.print( "    ");
+                    } else if(i % 2 == 0 && j % 2 == 0) {
+                       System.out.print( "[--]");
+                    }else if(i % 2 == 1 && j % 2 == 0) {
+                        System.out.print( "    ");
+                    } else {
+                        System.out.print( "[--]");
+                    }
                 }
             }
             System.out.println();
