@@ -74,9 +74,6 @@ public class Pilha <T>{
             calda.prox = novo;
             calda = novo;
         }
-
         tam++;
     }
-
-
 }
