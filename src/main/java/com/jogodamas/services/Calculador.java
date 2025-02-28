@@ -19,10 +19,14 @@ public class Calculador {
             coordenadasCalculadas = passarVetorMenorParaMaior(coordenadasCalculadas,
                     buscarCoordenadaDireitaNatural(pecaAtual, tabuleiro));
 
-            if(coordenadasCalculadas[0].getX() == pecaAtual.getCoordenadas().getX() + 2 && coordenadasCalculadas[0].getY() == pecaAtual.getCoordenadas().getX() + 2
-            || coordenadasCalculadas[0].getX() == pecaAtual.getCoordenadas().getX() - 2 && coordenadasCalculadas[0].getY() == pecaAtual.getCoordenadas().getX() + 2) {
+            try {
+                if((coordenadasCalculadas[0].getX() == pecaAtual.getCoordenadas().getX() + 2 && coordenadasCalculadas[0].getY() == pecaAtual.getCoordenadas().getY() + 2)
+                        || (coordenadasCalculadas[0].getX() == pecaAtual.getCoordenadas().getX() - 2 && coordenadasCalculadas[0].getY() == pecaAtual.getCoordenadas().getY() + 2)) {
 
-                return coordenadasCalculadas;
+                    return coordenadasCalculadas;
+                }
+            } catch (NullPointerException e) {
+
             }
 
             coordenadasCalculadas = passarVetorMenorParaMaior(coordenadasCalculadas,
