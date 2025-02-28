@@ -32,6 +32,12 @@ public class EndPoints {
         jogo.exibirTabuleiro(); // Usado apenas pelo backend para jogar no console
 
         jogador++;
+
+        // quando uma das pilha encher, quer dizer que o jogo acabou
+        if(jogo.getJogador1().getPilhaPecas().getTam() == 12 || jogo.getJogador2().getPilhaPecas().getTam() == 12){
+            jogo.setAcabou(true);
+        }
+
         return ResponseEntity.ok(new StatusJogoAtual(peca,
                                                      jogo.getJogador1().getPilhaPecas().getObjetosPilha(),
                                                      jogo.getJogador2().getPilhaPecas().getObjetosPilha(),
@@ -61,6 +67,12 @@ public class EndPoints {
     @PutMapping("/reset")
     public void reset(){
         System.out.println("reset");
+        jogo.resetarTabuleiro();
+    }
+
+    @PutMapping("/empate")
+    public void empate(){
+        jogo.setAcabou(true);
         jogo.resetarTabuleiro();
     }
 }

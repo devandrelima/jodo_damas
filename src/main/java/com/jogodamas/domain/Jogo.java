@@ -27,6 +27,10 @@ public class Jogo {
         return acabou;
     }
 
+    public void setAcabou(boolean acabou){
+        this.acabou = acabou;
+    }
+
     public Peca moverPeca(Coordenada proxCoordenada, Peca peca) throws Exception {
         int novoX = proxCoordenada.getX();
         int novoY = proxCoordenada.getY();
