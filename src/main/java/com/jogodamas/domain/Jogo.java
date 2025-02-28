@@ -15,6 +15,18 @@ public class Jogo {
         resetarTabuleiro();
     }
 
+    public Jogador getJogador1() {
+        return jogador1;
+    }
+
+    public Jogador getJogador2() {
+        return jogador2;
+    }
+
+    public boolean getAcabou(){
+        return acabou;
+    }
+
     public Peca moverPeca(Coordenada proxCoordenada, Peca peca) throws Exception {
         int novoX = proxCoordenada.getX();
         int novoY = proxCoordenada.getY();
@@ -118,4 +130,5 @@ public class Jogo {
             }
         }
     }
+
 }

@@ -76,4 +76,23 @@ public class Pilha <T>{
         }
         tam++;
     }
+
+    public Object[] getObjetosPilha(){
+        if(tam == 0 || cabeca == null){
+            Object[] objetos = new Object[1];
+            objetos[0] = null;
+            return objetos;
+        }
+
+        Object[] objetos = new Object[tam];
+        int contador = 0;
+        No novo = cabeca;
+
+        while(novo != null){
+            objetos[contador++] = novo.dado;
+            novo = novo.prox;
+        }
+
+        return objetos;
+    }
 }

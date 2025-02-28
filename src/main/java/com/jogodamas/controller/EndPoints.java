@@ -3,6 +3,7 @@ package com.jogodamas.controller;
 import com.jogodamas.domain.*;
 import com.jogodamas.dto.Jogada;
 import com.jogodamas.dto.PossiveisJogadas;
+import com.jogodamas.dto.StatusJogoAtual;
 import com.jogodamas.services.Calculador;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,20 +12,30 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping
 public class EndPoints {
     Jogo jogo = new Jogo();
-    private Pilha<Jogada> relatorioJogadas = new Pilha<>();
+    private Pilha<JogadaParaRelatorio> relatorioJogadas = new Pilha<>();
     int jogador;
 
     @PostMapping("/moverpeca")
-    public ResponseEntity<Peca> moverPeca(@RequestBody Jogada jogada) throws Exception {
+    public ResponseEntity<StatusJogoAtual> moverPeca(@RequestBody Jogada jogada) throws Exception {
         Peca peca = jogo.buscarPecaPorID(jogada.id()); // Busca a peça que está sendo movida pelo id
         peca = jogo.moverPeca(jogada.coordenada(), peca); // Move a peça no tabuleiro
+        int numeroJogador = 0;
 
-        relatorioJogadas.push(jogada); // Guarda a jogada no relatório
+        if(jogador%2==0){
+            numeroJogador = 1;
+        } else {
+            numeroJogador = 2;
+        }
+
+        relatorioJogadas.push(new JogadaParaRelatorio(jogada, numeroJogador)); // Guarda a jogada no relatório
 
         jogo.exibirTabuleiro(); // Usado apenas pelo backend para jogar no console
 
         jogador++;
-        return ResponseEntity.ok(peca); // Retorno a peça com a nova posição
+        return ResponseEntity.ok(new StatusJogoAtual(peca,
+                                                     jogo.getJogador1().getPilhaPecas().getObjetosPilha(),
+                                                     jogo.getJogador2().getPilhaPecas().getObjetosPilha(),
+                                                     jogo.getAcabou())); // Retorno a peça com a nova posição
     }
 
     @GetMapping("/movimentospossiveis")
