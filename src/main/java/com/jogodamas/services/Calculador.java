@@ -10,16 +10,24 @@ public class Calculador {
         Coordenada coordenadasCalculadas[] = new Coordenada[31];
 
         coordenadasCalculadas = passarVetorMenorParaMaior(coordenadasCalculadas,
-                                buscarCoordenadaDireitaNatural(pecaAtual, tabuleiro));
-
-        coordenadasCalculadas = passarVetorMenorParaMaior(coordenadasCalculadas,
                 buscarCoordenadaDireitaComedora(pecaAtual, tabuleiro));
 
         coordenadasCalculadas = passarVetorMenorParaMaior(coordenadasCalculadas,
                 buscarCoordenadaEsquerdaComedora(pecaAtual, tabuleiro));
 
-        coordenadasCalculadas = passarVetorMenorParaMaior(coordenadasCalculadas,
-                                buscarCoordenadaEsquerdaNatural(pecaAtual, tabuleiro));
+        if(coordenadasCalculadas[0] == null) { // Obriga a voltar comendo se não for nulo
+            coordenadasCalculadas = passarVetorMenorParaMaior(coordenadasCalculadas,
+                    buscarCoordenadaDireitaNatural(pecaAtual, tabuleiro));
+
+            if(coordenadasCalculadas[0].getX() == pecaAtual.getCoordenadas().getX() + 2 && coordenadasCalculadas[0].getY() == pecaAtual.getCoordenadas().getX() + 2
+            || coordenadasCalculadas[0].getX() == pecaAtual.getCoordenadas().getX() - 2 && coordenadasCalculadas[0].getY() == pecaAtual.getCoordenadas().getX() + 2) {
+
+                return coordenadasCalculadas;
+            }
+
+            coordenadasCalculadas = passarVetorMenorParaMaior(coordenadasCalculadas,
+                    buscarCoordenadaEsquerdaNatural(pecaAtual, tabuleiro));
+        }
 
         return coordenadasCalculadas;
     }
