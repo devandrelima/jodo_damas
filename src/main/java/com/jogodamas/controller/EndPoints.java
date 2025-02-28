@@ -1,5 +1,4 @@
 package com.jogodamas.controller;
-
 import com.jogodamas.domain.*;
 import com.jogodamas.dto.Jogada;
 import com.jogodamas.dto.PossiveisJogadas;
@@ -8,6 +7,7 @@ import com.jogodamas.services.Calculador;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping
 public class EndPoints {
