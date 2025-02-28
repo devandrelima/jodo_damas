@@ -15,9 +15,26 @@ public class Jogo {
         resetarTabuleiro();
     }
 
-    public Peca moverPeca(Coordenada proxCoordenada, Peca peca) {
+    public Peca moverPeca(Coordenada proxCoordenada, Peca peca) throws Exception {
         int novoX = proxCoordenada.getX();
         int novoY = proxCoordenada.getY();
+
+        if((novoX == peca.getCoordenadas().getX() + 2) || (novoX == peca.getCoordenadas().getX() - 2)){
+            if((novoY == peca.getCoordenadas().getY() + 2) || (novoY == peca.getCoordenadas().getY() - 2)){
+                int coordenadaXPontoMedio = (novoX + peca.getCoordenadas().getX()) / 2;
+                int coordenadaYPontoMedio = (novoY + peca.getCoordenadas().getY()) / 2;
+
+                Peca PecaEliminada = tabuleiro[coordenadaXPontoMedio][coordenadaYPontoMedio];
+
+                if(PecaEliminada.getId() <= 11){
+                    jogador1.getPilhaPecas().push(PecaEliminada);
+                } else {
+                    jogador2.getPilhaPecas().push(PecaEliminada);
+                }
+
+                tabuleiro[coordenadaXPontoMedio][coordenadaYPontoMedio] = null;
+            }
+        }
 
         tabuleiro[peca.getCoordenadas().getX()][peca.getCoordenadas().getY()] = null;
         tabuleiro[novoX][novoY] = peca;
