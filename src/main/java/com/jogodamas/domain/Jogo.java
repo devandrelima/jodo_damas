@@ -35,6 +35,7 @@ public class Jogo {
         int novoX = proxCoordenada.getX();
         int novoY = proxCoordenada.getY();
 
+        // Lógica para eliminar peça do jogo
         if((novoX == peca.getCoordenadas().getX() + 2) || (novoX == peca.getCoordenadas().getX() - 2)){
             if((novoY == peca.getCoordenadas().getY() + 2) || (novoY == peca.getCoordenadas().getY() - 2)){
                 int coordenadaXPontoMedio = (novoX + peca.getCoordenadas().getX()) / 2;

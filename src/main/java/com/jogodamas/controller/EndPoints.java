@@ -21,6 +21,16 @@ public class EndPoints {
         peca = jogo.moverPeca(jogada.coordenada(), peca); // Move a peça no tabuleiro
         int numeroJogador = 0;
 
+        // Quando a peça de cima chegar na última linha, vira dama
+        if((peca.getId() >= 0 && peca.getId() <= 11) && peca.getCoordenadas().getX() == 7){
+            peca.setRainha(true);
+        }
+
+        // Quando a peça de baixo chegar na primeira linha, vira dama
+        if((peca.getId() >= 12 && peca.getId() <= 23) && peca.getCoordenadas().getX() == 0){
+            peca.setRainha(true);
+        }
+
         if(jogador%2==0){
             numeroJogador = 1;
         } else {
