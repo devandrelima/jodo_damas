@@ -470,10 +470,10 @@ public class Calculador {
         Coordenada[] coordenadas = new Coordenada[5];
         int contador = 0;
 
-        int proxLinha = pecaAtual.getCoordenadas().getX() + 1;
+        int proxLinha = pecaAtual.getCoordenadas().getX() - 1;
         int proxColuna = pecaAtual.getCoordenadas().getY() - 1;
 
-        if (proxLinha < 0 || proxColuna < 0) { // Não sai do tabuleiro
+        if (proxLinha > 7 || proxColuna < 0) { // Não sai do tabuleiro
             coordenadas[contador++] = null;
 
             return coordenadas;
