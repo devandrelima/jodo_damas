@@ -76,6 +76,7 @@ public class EndPoints {
 
     @PutMapping("/reset")
     public void reset(){
+        this.jogador = 0;
         System.out.println("reset");
         jogo.resetarTabuleiro();
     }

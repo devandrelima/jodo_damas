@@ -117,6 +117,8 @@ public class Jogo {
 
     public void resetarTabuleiro(){
         int contador = 0;
+        this.jogador1 = new Jogador();
+        this.jogador2 = new Jogador();
 
         // Preenche tabuleiro com as peças
         for(int i=0; i<8; i++){
