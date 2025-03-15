@@ -4,7 +4,7 @@ import com.jogodamas.domain.Coordenada;
 import com.jogodamas.domain.Jogo;
 import com.jogodamas.domain.Peca;
 
-public class EsquerdaNatural {
+public class EsquerdaNaturalPecaNormal {
 
     public Coordenada[] buscarCoordenadaEsquerdaNaturalJogadorDeCimaPecaNormal(Peca pecaAtual, Jogo tabuleiro, int buscador){
         Coordenada[] coordenadas = new Coordenada[5];

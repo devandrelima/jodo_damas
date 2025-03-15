@@ -3,10 +3,11 @@ package com.jogodamas.services;
 import com.jogodamas.domain.Coordenada;
 import com.jogodamas.domain.Peca;
 import com.jogodamas.domain.Jogo;
-import com.jogodamas.services.pecanormal.direita.DireitaComedora;
-import com.jogodamas.services.pecanormal.direita.DireitaNatural;
-import com.jogodamas.services.pecanormal.esquerda.EsquerdaComedora;
-import com.jogodamas.services.pecanormal.esquerda.EsquerdaNatural;
+import com.jogodamas.services.pecanormal.direita.DireitaComedoraPecaNormal;
+import com.jogodamas.services.pecanormal.direita.DireitaNaturalPecaNormal;
+import com.jogodamas.services.pecanormal.esquerda.EsquerdaComedoraPecaNormal;
+import com.jogodamas.services.pecanormal.esquerda.EsquerdaNaturalPecaNormal;
+import com.jogodamas.services.pecarainha.direita.DireitaNaturalPecaRainha;
 
 public class Calculador {
     public Coordenada[] calcularPossiveisJogadas(int id, Jogo tabuleiro) {
@@ -95,23 +96,24 @@ public class Calculador {
      */
 
     private Coordenada[] buscarCoordenadaDireitaNatural(Peca pecaAtual, Jogo tabuleiro) {
-        DireitaNatural direita = new DireitaNatural();
+        DireitaNaturalPecaNormal direitaPecaNormal = new DireitaNaturalPecaNormal();
+        DireitaNaturalPecaRainha diretaRainha = new DireitaNaturalPecaRainha();
 
         if (!pecaAtual.isRainha()) { // Não é rainha
 
             if (pecaAtual.getId() <= 11) { // Peças do Jogador de Cima
-                return direita.buscarCoordenadaDireitaNaturalJogadorDeCimaPecaNormal(pecaAtual, tabuleiro, 0);
+                return direitaPecaNormal.buscarCoordenadaDireitaNaturalJogadorDeCimaPecaNormal(pecaAtual, tabuleiro, 0);
 
             } else { // Peças do Jogador de Baixo
 
-                return direita.buscarCoordenadaDireitaNaturalJogadorDeBaixoPecaNormal(pecaAtual, tabuleiro, 0);
+                return direitaPecaNormal.buscarCoordenadaDireitaNaturalJogadorDeBaixoPecaNormal(pecaAtual, tabuleiro, 0);
 
             }
         } else { // é rainha
             System.out.println("Está em andamento");
 
             if (pecaAtual.getId() <= 11) { // Peças do Jogador de Cima
-                return buscarCoordenadaDireitaNaturalJogadorDeCimaPecaRainha(pecaAtual, tabuleiro, 0, new Coordenada[6], false);
+               return diretaRainha.buscarCoordenadaDireitaNaturalJogadorDeCimaPecaRainha(pecaAtual, tabuleiro, 0, new Coordenada[6], false);
 
             } else { // Peças do Jogador de Baixo
 
@@ -135,16 +137,16 @@ public class Calculador {
      */
 
     private Coordenada[] buscarCoordenadaDireitaComedora(Peca pecaAtual, Jogo tabuleiro) {
-        DireitaComedora direita = new DireitaComedora();
+        DireitaComedoraPecaNormal direitaPecaNormal = new DireitaComedoraPecaNormal();
 
         if (!pecaAtual.isRainha()) { // Não é rainha
 
             if (pecaAtual.getId() <= 11) { // Peças do Jogador de Cima
-                return direita.buscarCoordenadaDireitaComedoraJogadorDeCimaPecaNormal(pecaAtual, tabuleiro, 0);
+                return direitaPecaNormal.buscarCoordenadaDireitaComedoraJogadorDeCimaPecaNormal(pecaAtual, tabuleiro, 0);
 
             } else { // Peças do Jogador de Baixo
 
-                return direita.buscarCoordenadaDireitaComedoraJogadorDeBaixoPecaNormal(pecaAtual, tabuleiro, 0);
+                return direitaPecaNormal.buscarCoordenadaDireitaComedoraJogadorDeBaixoPecaNormal(pecaAtual, tabuleiro, 0);
 
             }
         } else { // é rainha
@@ -166,17 +168,17 @@ public class Calculador {
 
     */
     private Coordenada[] buscarCoordenadaEsquerdaNatural(Peca pecaAtual, Jogo tabuleiro) {
-        EsquerdaNatural esquerda = new EsquerdaNatural();
+        EsquerdaNaturalPecaNormal esquerdaPecaNormal = new EsquerdaNaturalPecaNormal();
 
         if (!pecaAtual.isRainha()) { // Não é rainha
 
             if (pecaAtual.getId() <= 11) { // Pessoas do Jogador de Cima
 
-                return esquerda.buscarCoordenadaEsquerdaNaturalJogadorDeCimaPecaNormal(pecaAtual, tabuleiro, 0);
+                return esquerdaPecaNormal.buscarCoordenadaEsquerdaNaturalJogadorDeCimaPecaNormal(pecaAtual, tabuleiro, 0);
 
             } else { // Pessoas do Jogador de Baixo
 
-                return esquerda.buscarCoordenadaEsquerdaNaturalJogadorDeBaixoPecaNormal(pecaAtual, tabuleiro, 0);
+                return esquerdaPecaNormal.buscarCoordenadaEsquerdaNaturalJogadorDeBaixoPecaNormal(pecaAtual, tabuleiro, 0);
 
             }
         } else {
@@ -197,17 +199,17 @@ public class Calculador {
 
     */
     private Coordenada[] buscarCoordenadaEsquerdaComedora(Peca pecaAtual, Jogo tabuleiro) {
-        EsquerdaComedora esquerda = new EsquerdaComedora();
+        EsquerdaComedoraPecaNormal esquerdaPecaNormal = new EsquerdaComedoraPecaNormal();
 
         if (!pecaAtual.isRainha()) { // Não é rainha
 
             if (pecaAtual.getId() <= 11) { // Pessoas do Jogador de Cima
 
-                return esquerda.buscarCoordenadaEsquerdaComedoraJogadorDeCimaPecaNormal(pecaAtual, tabuleiro, 0);
+                return esquerdaPecaNormal.buscarCoordenadaEsquerdaComedoraJogadorDeCimaPecaNormal(pecaAtual, tabuleiro, 0);
 
             } else { // Pessoas do Jogador de Baixo
 
-                return esquerda.buscarCoordenadaEsquerdaComedoraJogadorDeBaixoPecaNormal(pecaAtual, tabuleiro, 0);
+                return esquerdaPecaNormal.buscarCoordenadaEsquerdaComedoraJogadorDeBaixoPecaNormal(pecaAtual, tabuleiro, 0);
 
             }
         } else {
@@ -216,39 +218,5 @@ public class Calculador {
 
         return null;
     }
-
-
-    private Coordenada[] buscarCoordenadaDireitaNaturalJogadorDeCimaPecaRainha(Peca pecaAtual, Jogo tabuleiro, int buscador, Coordenada[] coordenadas, boolean inimigo) {
-        //Coordenada[] coordenadas = new Coordenada[5];
-        //int contador = 0;
-
-        int proxLinha = pecaAtual.getCoordenadas().getX() + 1;
-        int proxColuna = pecaAtual.getCoordenadas().getY() + 1;
-
-        if (proxLinha > 7 || proxColuna > 7) { // Não sai do tabuleiro, para quando chega no limite
-            coordenadas[buscador] = null;
-
-            return coordenadas;
-        }
-
-        Peca proxPeca = tabuleiro.buscarPecaPorCoordenada(new Coordenada(proxLinha, proxColuna));
-
-        if (proxPeca == null) { // Não tem peça na próxima coordenada
-            coordenadas[buscador] = new Coordenada(proxLinha, proxColuna);
-            buscador++;
-            return buscarCoordenadaDireitaNaturalJogadorDeCimaPecaRainha(proxPeca, tabuleiro, buscador, coordenadas, false);
-
-        } else if (proxPeca.getId() >= 12) { // A próxima peca é inimiga, talvez tenha como comer ela
-            if (inimigo) { // A próxima peça é inimiga e tem outra peça protegendo
-                coordenadas[buscador] = null;
-                return coordenadas;
-            }
-
-            return buscarCoordenadaDireitaNaturalJogadorDeCimaPecaRainha(proxPeca, tabuleiro, buscador, coordenadas, true);
-
-        } else {
-            coordenadas[buscador] = null; // A próxima peça é amiga, não tem como pular ela
-            return coordenadas; // para quando encontra amiga
-        }
-    }
 }
+
