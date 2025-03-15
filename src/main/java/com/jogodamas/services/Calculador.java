@@ -121,6 +121,7 @@ public class Calculador {
             }
         } else { // é rainha
             System.out.println("Rainha ainda não está pronta");
+
         }
 
         return null;
