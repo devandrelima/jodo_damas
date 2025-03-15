@@ -36,14 +36,15 @@ public class Jogo {
         int novoY = proxCoordenada.getY();
 
         // Lógica para eliminar peça do jogo
-        if((novoX == peca.getCoordenadas().getX() + 2) || (novoX == peca.getCoordenadas().getX() - 2)){
-            if((novoY == peca.getCoordenadas().getY() + 2) || (novoY == peca.getCoordenadas().getY() - 2)){
-                int coordenadaXPontoMedio = (novoX + peca.getCoordenadas().getX()) / 2;
-                int coordenadaYPontoMedio = (novoY + peca.getCoordenadas().getY()) / 2;
 
-                Peca PecaEliminada = tabuleiro[coordenadaXPontoMedio][coordenadaYPontoMedio];
+        if(!peca.isRainha()){
+            if((novoX == peca.getCoordenadas().getX() + 2) || (novoX == peca.getCoordenadas().getX() - 2)){
+                if((novoY == peca.getCoordenadas().getY() + 2) || (novoY == peca.getCoordenadas().getY() - 2)){
+                    int coordenadaXPontoMedio = (novoX + peca.getCoordenadas().getX()) / 2;
+                    int coordenadaYPontoMedio = (novoY + peca.getCoordenadas().getY()) / 2;
 
-                if(PecaEliminada != null){ // Evita bugs com as casas que a dama salta sem ter peça
+                    Peca PecaEliminada = tabuleiro[coordenadaXPontoMedio][coordenadaYPontoMedio];
+
                     if(PecaEliminada.getId() <= 11){
                         jogador1.getPilhaPecas().push(PecaEliminada);
                     } else {
@@ -51,6 +52,76 @@ public class Jogo {
                     }
 
                     tabuleiro[coordenadaXPontoMedio][coordenadaYPontoMedio] = null;
+                }
+            }
+        } else {
+
+            int pecaX = peca.getCoordenadas().getX();
+            int pecaY = peca.getCoordenadas().getY();
+
+            if(pecaX < novoX){
+                if(pecaY < novoY){
+                    for(int i = pecaX, j = pecaY; i < novoX && j < novoY; i++, j++){
+                        if(tabuleiro[i][j] != null){
+
+                            Peca PecaEliminada = tabuleiro[i][j];
+
+                            if(PecaEliminada.getId() <= 11){
+                                jogador1.getPilhaPecas().push(PecaEliminada);
+                            } else {
+                                jogador2.getPilhaPecas().push(PecaEliminada);
+                            }
+
+                            tabuleiro[i][j] = null;
+                        }
+                    }
+                } else {
+                    for(int i = pecaX, j = pecaY; i < novoX && j > novoY; i++, j--){
+                        if(tabuleiro[i][j] != null){
+
+                            Peca PecaEliminada = tabuleiro[i][j];
+
+                            if(PecaEliminada.getId() <= 11){
+                                jogador1.getPilhaPecas().push(PecaEliminada);
+                            } else {
+                                jogador2.getPilhaPecas().push(PecaEliminada);
+                            }
+
+                            tabuleiro[i][j] = null;
+                        }
+                    }
+                }
+            } else {
+                if(pecaY < novoY){
+                    for(int i = pecaX, j = pecaY; i > novoX && j < novoY; i--, j++){
+                        if(tabuleiro[i][j] != null){
+
+                            Peca PecaEliminada = tabuleiro[i][j];
+
+                            if(PecaEliminada.getId() <= 11){
+                                jogador1.getPilhaPecas().push(PecaEliminada);
+                            } else {
+                                jogador2.getPilhaPecas().push(PecaEliminada);
+                            }
+
+                            tabuleiro[i][j] = null;
+                        }
+                    }
+                } else {
+                    for(int i = pecaX, j = pecaY; i > novoX && j > novoY; i--, j--){
+                        if(tabuleiro[i][j] != null){
+
+                            Peca PecaEliminada = tabuleiro[i][j];
+
+                            if(PecaEliminada.getId() <= 11){
+                                jogador1.getPilhaPecas().push(PecaEliminada);
+                            } else {
+                                jogador2.getPilhaPecas().push(PecaEliminada);
+                            }
+
+                            tabuleiro[i][j] = null;
+                        }
+                    }
                 }
             }
         }
