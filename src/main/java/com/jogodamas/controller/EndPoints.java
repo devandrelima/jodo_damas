@@ -6,6 +6,10 @@ import com.jogodamas.dto.StatusJogoAtual;
 import com.jogodamas.services.Calculador;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
 
 @CrossOrigin
 @RestController
@@ -17,14 +21,18 @@ public class EndPoints {
 
     @PostMapping("/moverpeca")
     public ResponseEntity<StatusJogoAtual> moverPeca(@RequestBody Jogada jogada) throws Exception {
-        Peca peca = jogo.buscarPecaPorID(jogada.id()); // Busca a peça que está sendo movida pelo id
-        peca = jogo.moverPeca(jogada.coordenada(), peca); // Move a peça no tabuleiro
-        int numeroJogador = 0;
+        Peca peca = jogo.buscarPecaPorID(jogada.id());
+        peca = jogo.moverPeca(jogada.coordenada(), peca);
+        int numeroJogador = (jogador % 2 == 0) ? 1 : 2;
 
-        if(jogador%2==0){
-            numeroJogador = 1;
-        } else {
-            numeroJogador = 2;
+        // Quando a peça de cima chegar na última linha, vira dama
+        if((peca.getId() >= 0 && peca.getId() <= 11) && peca.getCoordenadas().getX() == 7){
+            peca.setRainha(true);
+        }
+
+        // Quando a peça de baixo chegar na primeira linha, vira dama
+        if((peca.getId() >= 12 && peca.getId() <= 23) && peca.getCoordenadas().getX() == 0){
+            peca.setRainha(true);
         }
 
         relatorioJogadas.push(new JogadaParaRelatorio(jogada, numeroJogador)); // Guarda a jogada no relatório
@@ -43,6 +51,31 @@ public class EndPoints {
                                                      jogo.getJogador2().getPilhaPecas().getObjetosPilha(),
                                                      jogo.getAcabou())); // Retorno a peça com a nova posição
     }
+
+        @GetMapping("/relatorio")
+    public ResponseEntity<String> gerarRelatorioJogadas() {
+        Object[] jogadasArray = relatorioJogadas.getObjetosPilha();
+        System.out.println("Quantidade de jogadas registradas: " + jogadasArray.length);
+        System.out.println("Conteúdo da pilha: " + Arrays.toString(jogadasArray));
+        
+        if (jogadasArray.length == 0 || jogadasArray[0] == null) {
+            return ResponseEntity.status(400).body("Nenhuma jogada registrada.");
+        }
+        
+        java.io.File file = new java.io.File("relatorio_jogadas.txt");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write("Relatório de Jogadas:\n");
+            for (Object obj : jogadasArray) {
+                if (obj instanceof JogadaParaRelatorio jogada) {
+                    writer.write("Jogador " + jogada.getNumeroJogador() + ": " + jogada.getJogada().toString() + "\n");
+                }
+            }
+            return ResponseEntity.ok("Relatório gerado com sucesso: " + file.getAbsolutePath());
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("Erro ao gerar relatório de jogadas: " + e.getMessage());
+        }
+    }
+
 
     @GetMapping("/movimentospossiveis")
     public ResponseEntity movimentosPossiveis( @RequestParam int id){
@@ -67,6 +100,7 @@ public class EndPoints {
     @PutMapping("/reset")
     public void reset(){
         this.jogador = 0;
+        this.relatorioJogadas = new Pilha<>(); // Resetar jogadas ao reiniciar
         System.out.println("reset");
         jogo.resetarTabuleiro();
     }
