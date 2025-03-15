@@ -10,28 +10,16 @@ public class Calculador {
         Coordenada coordenadasCalculadas[] = new Coordenada[31];
 
         coordenadasCalculadas = passarVetorMenorParaMaior(coordenadasCalculadas,
+                buscarCoordenadaEsquerdaComedora(pecaAtual, tabuleiro));
+
+        coordenadasCalculadas = passarVetorMenorParaMaior(coordenadasCalculadas,
                 buscarCoordenadaDireitaComedora(pecaAtual, tabuleiro));
 
         coordenadasCalculadas = passarVetorMenorParaMaior(coordenadasCalculadas,
-                buscarCoordenadaEsquerdaComedora(pecaAtual, tabuleiro));
+                buscarCoordenadaDireitaNatural(pecaAtual, tabuleiro));
 
-        if(coordenadasCalculadas[0] == null) { // Obriga a voltar comendo se não for nulo
-            coordenadasCalculadas = passarVetorMenorParaMaior(coordenadasCalculadas,
-                    buscarCoordenadaDireitaNatural(pecaAtual, tabuleiro));
-
-            try {
-                if((coordenadasCalculadas[0].getX() == pecaAtual.getCoordenadas().getX() + 2 && coordenadasCalculadas[0].getY() == pecaAtual.getCoordenadas().getY() + 2)
-                        || (coordenadasCalculadas[0].getX() == pecaAtual.getCoordenadas().getX() - 2 && coordenadasCalculadas[0].getY() == pecaAtual.getCoordenadas().getY() + 2)) {
-
-                    return coordenadasCalculadas;
-                }
-            } catch (NullPointerException e) {
-
-            }
-
-            coordenadasCalculadas = passarVetorMenorParaMaior(coordenadasCalculadas,
-                    buscarCoordenadaEsquerdaNatural(pecaAtual, tabuleiro));
-        }
+        coordenadasCalculadas = passarVetorMenorParaMaior(coordenadasCalculadas,
+                buscarCoordenadaEsquerdaNatural(pecaAtual, tabuleiro));
 
         return coordenadasCalculadas;
     }
@@ -51,7 +39,7 @@ public class Calculador {
                 break;
             }
 
-            maior[contador] = caixaDeSeguranca;
+            maior[contador++] = caixaDeSeguranca;
         }
 
         return maior;
@@ -470,7 +458,7 @@ public class Calculador {
         Coordenada[] coordenadas = new Coordenada[5];
         int contador = 0;
 
-        int proxLinha = pecaAtual.getCoordenadas().getX() - 1;
+        int proxLinha = pecaAtual.getCoordenadas().getX() + 1;
         int proxColuna = pecaAtual.getCoordenadas().getY() - 1;
 
         if (proxLinha > 7 || proxColuna < 0) { // Não sai do tabuleiro
