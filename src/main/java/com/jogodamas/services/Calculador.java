@@ -7,7 +7,10 @@ import com.jogodamas.services.pecanormal.direita.DireitaComedoraPecaNormal;
 import com.jogodamas.services.pecanormal.direita.DireitaNaturalPecaNormal;
 import com.jogodamas.services.pecanormal.esquerda.EsquerdaComedoraPecaNormal;
 import com.jogodamas.services.pecanormal.esquerda.EsquerdaNaturalPecaNormal;
+import com.jogodamas.services.pecarainha.direita.DireitaComedoraRainha;
 import com.jogodamas.services.pecarainha.direita.DireitaNaturalPecaRainha;
+import com.jogodamas.services.pecarainha.esquerda.EsquerdaComedoraPecaRainha;
+import com.jogodamas.services.pecarainha.esquerda.EsquerdaNaturalPecaRainha;
 
 public class Calculador {
     public Coordenada[] calcularPossiveisJogadas(int id, Jogo tabuleiro) {
@@ -113,11 +116,11 @@ public class Calculador {
             System.out.println("Está em andamento");
 
             if (pecaAtual.getId() <= 11) { // Peças do Jogador de Cima
-               return diretaRainha.buscarCoordenadaDireitaNaturalJogadorDeCimaPecaRainha(pecaAtual, tabuleiro, 0, new Coordenada[6], false);
+               return diretaRainha.buscarCoordenadaJogadorDeCima(pecaAtual, tabuleiro, 0, new Coordenada[6], false);
 
             } else { // Peças do Jogador de Baixo
 
-                //return buscarCoordenadaDireitaNaturalJogadorDeBaixoPecaRainha(pecaAtual, tabuleiro, 0);
+
 
             }
         }
@@ -138,6 +141,7 @@ public class Calculador {
 
     private Coordenada[] buscarCoordenadaDireitaComedora(Peca pecaAtual, Jogo tabuleiro) {
         DireitaComedoraPecaNormal direitaPecaNormal = new DireitaComedoraPecaNormal();
+        DireitaComedoraRainha direitaRainha = new DireitaComedoraRainha();
 
         if (!pecaAtual.isRainha()) { // Não é rainha
 
@@ -150,7 +154,16 @@ public class Calculador {
 
             }
         } else { // é rainha
-            System.out.println("Rainha ainda não está pronta");
+            System.out.println("Está em andamento");
+
+            if (pecaAtual.getId() <= 11) { // Peças do Jogador de Cima
+                return direitaRainha.buscarCoordenadaJogadorDeCima(pecaAtual, tabuleiro, 0, new Coordenada[6], false);
+
+            } else { // Peças do Jogador de Baixo
+
+
+
+            }
 
         }
 
@@ -169,6 +182,7 @@ public class Calculador {
     */
     private Coordenada[] buscarCoordenadaEsquerdaNatural(Peca pecaAtual, Jogo tabuleiro) {
         EsquerdaNaturalPecaNormal esquerdaPecaNormal = new EsquerdaNaturalPecaNormal();
+        EsquerdaNaturalPecaRainha esquerdaRainha = new EsquerdaNaturalPecaRainha();
 
         if (!pecaAtual.isRainha()) { // Não é rainha
 
@@ -182,7 +196,16 @@ public class Calculador {
 
             }
         } else {
-            System.out.println("Rainha ainda precisa ser construída");
+            System.out.println("Está em andamento");
+
+            if (pecaAtual.getId() <= 11) { // Peças do Jogador de Cima
+                return esquerdaRainha.buscarCoordenadaJogadorDeCima(pecaAtual, tabuleiro, 0, new Coordenada[6], false);
+
+            } else { // Peças do Jogador de Baixo
+
+
+
+            }
         }
 
         return null;
@@ -200,6 +223,7 @@ public class Calculador {
     */
     private Coordenada[] buscarCoordenadaEsquerdaComedora(Peca pecaAtual, Jogo tabuleiro) {
         EsquerdaComedoraPecaNormal esquerdaPecaNormal = new EsquerdaComedoraPecaNormal();
+        EsquerdaComedoraPecaRainha esquerdaRainha = new EsquerdaComedoraPecaRainha();
 
         if (!pecaAtual.isRainha()) { // Não é rainha
 
@@ -213,7 +237,16 @@ public class Calculador {
 
             }
         } else {
-            System.out.println("Rainha ainda precisa ser construída");
+            System.out.println("Está em andamento");
+
+            if (pecaAtual.getId() <= 11) { // Peças do Jogador de Cima
+                return esquerdaRainha.buscarCoordenadaJogadorDeCima(pecaAtual, tabuleiro, 0, new Coordenada[6], false);
+
+            } else { // Peças do Jogador de Baixo
+
+
+
+            }
         }
 
         return null;

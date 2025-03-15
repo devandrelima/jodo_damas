@@ -4,16 +4,16 @@ import com.jogodamas.domain.Coordenada;
 import com.jogodamas.domain.Jogo;
 import com.jogodamas.domain.Peca;
 
-public class DireitaNaturalPecaRainha {
+public class DireitaComedoraRainha {
 
     public Coordenada[] buscarCoordenadaJogadorDeCima(Peca pecaAtual, Jogo tabuleiro, int buscador, Coordenada[] coordenadas, boolean inimigo) {
         //Coordenada[] coordenadas = new Coordenada[5];
         //int contador = 0;
 
-        int proxLinha = pecaAtual.getCoordenadas().getX() + 1;
+        int proxLinha = pecaAtual.getCoordenadas().getX() - 1;
         int proxColuna = pecaAtual.getCoordenadas().getY() + 1;
 
-        if (proxLinha > 7 || proxColuna > 7) { // Não sai do tabuleiro, para quando chega no limite
+        if (proxLinha < 0 || proxColuna > 7) { // Não sai do tabuleiro, para quando chega no limite
             coordenadas[buscador] = null;
 
             return coordenadas;

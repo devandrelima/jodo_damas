@@ -43,13 +43,15 @@ public class Jogo {
 
                 Peca PecaEliminada = tabuleiro[coordenadaXPontoMedio][coordenadaYPontoMedio];
 
-                if(PecaEliminada.getId() <= 11){
-                    jogador1.getPilhaPecas().push(PecaEliminada);
-                } else {
-                    jogador2.getPilhaPecas().push(PecaEliminada);
-                }
+                if(PecaEliminada != null){ // Evita bugs com as casas que a dama salta sem ter peça
+                    if(PecaEliminada.getId() <= 11){
+                        jogador1.getPilhaPecas().push(PecaEliminada);
+                    } else {
+                        jogador2.getPilhaPecas().push(PecaEliminada);
+                    }
 
-                tabuleiro[coordenadaXPontoMedio][coordenadaYPontoMedio] = null;
+                    tabuleiro[coordenadaXPontoMedio][coordenadaYPontoMedio] = null;
+                }
             }
         }
 
