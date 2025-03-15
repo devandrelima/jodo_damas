@@ -10,4 +10,14 @@ public class JogadaParaRelatorio {
         this.jogada = jogada;
         this.jogador = jogador;
     }
+    
+    public Jogada getJogada() {
+        return jogada;
+    }
+    
+    public int getNumeroJogador() {
+        return jogador;
+    }
 }
+
+
