@@ -17,6 +17,7 @@ import java.util.Arrays;
 public class EndPoints {
     Jogo jogo = new Jogo();
     private Pilha<JogadaParaRelatorio> relatorioJogadas = new Pilha<>();
+    private Ranking ranking = new Ranking();
     int jogador;
 
     @PostMapping("/moverpeca")
@@ -42,7 +43,13 @@ public class EndPoints {
         jogador++;
 
         // quando uma das pilha encher, quer dizer que o jogo acabou
-        if(jogo.getJogador1().getPilhaPecas().getTam() == 12 || jogo.getJogador2().getPilhaPecas().getTam() == 12){
+        if(jogo.getJogador1().getPilhaPecas().getTam() == 12) {
+
+            ranking.registrarVitoria(jogo.getJogador1().getNome());
+            jogo.setAcabou(true);
+
+        } else if (jogo.getJogador2().getPilhaPecas().getTam() == 12){
+            ranking.registrarVitoria(jogo.getJogador2().getNome());
             jogo.setAcabou(true);
         }
 
@@ -107,7 +114,15 @@ public class EndPoints {
 
     @PutMapping("/empate")
     public void empate(){
+        ranking.registrarEmpate(jogo.getJogador1().getNome());
+        ranking.registrarEmpate(jogo.getJogador2().getNome());
         jogo.setAcabou(true);
         jogo.resetarTabuleiro();
     }
+
+    @GetMapping("/ranking")
+    public ResponseEntity<JogadorRanking[]> obterRanking() {
+        return ResponseEntity.ok(ranking.gerarRanking()); // ⬅ Retorna ranking atualizado
+    }
+
 }
