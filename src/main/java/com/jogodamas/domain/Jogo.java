@@ -59,6 +59,16 @@ public class Jogo {
         peca.getCoordenadas().setX(novoX);
         peca.getCoordenadas().setY(novoY);
 
+        // Quando a peça de cima chegar na última linha, vira dama
+        if((peca.getId() <= 11) && peca.getCoordenadas().getX() == 7){
+            peca.setRainha(true);
+        }
+
+        // Quando a peça de baixo chegar na primeira linha, vira dama
+        if((peca.getId() >= 12 ) && peca.getCoordenadas().getX() == 0){
+            peca.setRainha(true);
+        }
+
         return peca;
     }
 
