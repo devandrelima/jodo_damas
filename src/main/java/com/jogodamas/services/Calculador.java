@@ -21,6 +21,8 @@ public class Calculador {
         coordenadasCalculadas = passarVetorMenorParaMaior(coordenadasCalculadas,
                 buscarCoordenadaEsquerdaNatural(pecaAtual, tabuleiro));
 
+       coordenadasCalculadas = obrigarComer(coordenadasCalculadas, pecaAtual.getCoordenadas());
+
         return coordenadasCalculadas;
     }
 
@@ -43,6 +45,34 @@ public class Calculador {
         }
 
         return maior;
+    }
+
+    private Coordenada[] obrigarComer(Coordenada[] vetorCoordenadas, Coordenada coordenadaDaPeca){
+        boolean obrigaComer = false;
+
+        // Varre vetor procurando se há coordenada para comer peça
+        for (int i = 0; vetorCoordenadas[i] != null; i++) {
+            if (vetorCoordenadas[i].getX() == coordenadaDaPeca.getX() + 2 || vetorCoordenadas[i].getX() == coordenadaDaPeca.getX() - 2) {
+                obrigaComer = true;
+                break;
+            }
+        }
+
+        // Caso haja coordenada para comer, eu apago todas as outras que não sejam para comer
+        if(obrigaComer){
+            // Transforma aquelas coordenadas não destinadas a comer em null
+            for(int i = 0; vetorCoordenadas[i] != null; i++){
+                if(vetorCoordenadas[i].getX() == coordenadaDaPeca.getX()+2){
+                    continue;
+                } else if(vetorCoordenadas[i].getX() == coordenadaDaPeca.getX()-2){
+                    continue;
+                } else {
+                    vetorCoordenadas[i] = null;
+                }
+            }
+        }
+
+        return vetorCoordenadas;
     }
 
     // DIREITA NATURAL
@@ -196,7 +226,7 @@ public class Calculador {
             return coordenadas;
 
         } else if(proxPeca.getId() >= 12){ // A próxima peca é inimiga, talvez tenha como comer ela
-            if(buscador > 1) { // A próxima peça é inimiga e tem outra peça protegendo
+            if(buscador > 0) { // A próxima peça é inimiga e tem outra peça protegendo
                 coordenadas[0] = null;
                 return coordenadas;
             }
@@ -267,7 +297,7 @@ public class Calculador {
             return coordenadas;
 
         } if(proxPeca.getId() >= 12){ // A próxima peca é inimiga, talvez tenha como comer ela
-            if(buscador > 1) { // A próxima peça é inimiga e tem outra peça protegendo
+            if(buscador > 0) { // A próxima peça é inimiga e tem outra peça protegendo
                 coordenadas[0] = null;
                 return coordenadas;
             }
@@ -302,7 +332,7 @@ public class Calculador {
             return coordenadas;
 
         } else if(proxPeca.getId() <= 11){ // A próxima peca é inimiga, talvez tenha como comer ela
-            if(buscador > 1) { // A próxima peça é inimiga e tem outra peça protegendo
+            if(buscador > 0) { // A próxima peça é inimiga e tem outra peça protegendo
                 coordenadas[0] = null;
                 return coordenadas;
             }
@@ -338,7 +368,7 @@ public class Calculador {
             return coordenadas;
 
         } if(proxPeca.getId() <= 11){ // A próxima peca é inimiga, talvez tenha como comer ela
-            if(buscador > 1) { // A próxima peça é inimiga e tem outra peça protegendo
+            if(buscador > 0) { // A próxima peça é inimiga e tem outra peça protegendo
                 coordenadas[0] = null;
                 return coordenadas;
             }
@@ -371,7 +401,7 @@ public class Calculador {
             return coordenadas;
 
         } else if(proxPeca.getId() >= 12){ // A próxima peca é inimiga, talvez tenha como comer ela
-            if(buscador > 1) { // A próxima peça é inimiga e tem outra peça protegendo
+            if(buscador > 0) { // A próxima peça é inimiga e tem outra peça protegendo
                 coordenadas[0] = null;
                 return coordenadas;
             }
@@ -407,7 +437,7 @@ public class Calculador {
             return coordenadas;
 
         } if(proxPeca.getId() >= 12){ // A próxima peca é inimiga, talvez tenha como comer ela
-            if(buscador > 1) { // A próxima peça é inimiga e tem outra peça protegendo
+            if(buscador > 0) { // A próxima peça é inimiga e tem outra peça protegendo
                 coordenadas[0] = null;
                 return coordenadas;
             }
@@ -441,7 +471,7 @@ public class Calculador {
             return coordenadas;
 
         } else if(proxPeca.getId() <= 11){ // A próxima peca é inimiga, talvez tenha como comer ela
-            if(buscador > 1) { // A próxima peça é inimiga e tem outra peça protegendo
+            if(buscador > 0) { // A próxima peça é inimiga e tem outra peça protegendo
                 coordenadas[0] = null;
                 return coordenadas;
             }
@@ -478,7 +508,7 @@ public class Calculador {
             return coordenadas;
 
         } else if(proxPeca.getId() <= 11){ // A próxima peca é inimiga, talvez tenha como comer ela
-            if(buscador > 1) { // A próxima peça é inimiga e tem outra peça protegendo
+            if(buscador > 0) { // A próxima peça é inimiga e tem outra peça protegendo
                 coordenadas[0] = null;
                 return coordenadas;
             }
