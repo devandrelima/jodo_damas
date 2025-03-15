@@ -100,7 +100,7 @@ public class Calculador {
 
     private Coordenada[] buscarCoordenadaDireitaNatural(Peca pecaAtual, Jogo tabuleiro) {
         DireitaNaturalPecaNormal direitaPecaNormal = new DireitaNaturalPecaNormal();
-        DireitaNaturalPecaRainha diretaRainha = new DireitaNaturalPecaRainha();
+        DireitaNaturalPecaRainha direitaRainha = new DireitaNaturalPecaRainha();
 
         if (!pecaAtual.isRainha()) { // Não é rainha
 
@@ -116,16 +116,13 @@ public class Calculador {
             System.out.println("Está em andamento");
 
             if (pecaAtual.getId() <= 11) { // Peças do Jogador de Cima
-               return diretaRainha.buscarCoordenadaJogadorDeCima(pecaAtual, tabuleiro, 0, new Coordenada[6], false);
+               return direitaRainha.buscarCoordenadaJogadorDeCima(pecaAtual, tabuleiro, 0, new Coordenada[8], false);
 
             } else { // Peças do Jogador de Baixo
-
-
+                return direitaRainha.buscarCoordenadaJogadorDeBaixo(pecaAtual, tabuleiro, 0, new Coordenada[8], false);
 
             }
         }
-
-        return null;
     }
 
     // DIREITA COMEDORA
@@ -157,17 +154,13 @@ public class Calculador {
             System.out.println("Está em andamento");
 
             if (pecaAtual.getId() <= 11) { // Peças do Jogador de Cima
-                return direitaRainha.buscarCoordenadaJogadorDeCima(pecaAtual, tabuleiro, 0, new Coordenada[6], false);
+                return direitaRainha.buscarCoordenadaJogadorDeCima(pecaAtual, tabuleiro, 0, new Coordenada[8], false);
 
             } else { // Peças do Jogador de Baixo
 
-
-
+                return direitaRainha.buscarCoordenadaJogadorDeBaixo(pecaAtual, tabuleiro, 0, new Coordenada[8], false);
             }
-
         }
-
-        return null;
     }
 
     // ESQUERDA NATURAL
@@ -199,16 +192,14 @@ public class Calculador {
             System.out.println("Está em andamento");
 
             if (pecaAtual.getId() <= 11) { // Peças do Jogador de Cima
-                return esquerdaRainha.buscarCoordenadaJogadorDeCima(pecaAtual, tabuleiro, 0, new Coordenada[6], false);
+                return esquerdaRainha.buscarCoordenadaJogadorDeCima(pecaAtual, tabuleiro, 0, new Coordenada[8], false);
 
             } else { // Peças do Jogador de Baixo
 
-
+                return esquerdaRainha.buscarCoordenadaJogadorDeBaixo(pecaAtual, tabuleiro, 0, new Coordenada[8], false);
 
             }
         }
-
-        return null;
     }
 
     // ESQUERDA COMEDORA
@@ -240,16 +231,12 @@ public class Calculador {
             System.out.println("Está em andamento");
 
             if (pecaAtual.getId() <= 11) { // Peças do Jogador de Cima
-                return esquerdaRainha.buscarCoordenadaJogadorDeCima(pecaAtual, tabuleiro, 0, new Coordenada[6], false);
+                return esquerdaRainha.buscarCoordenadaJogadorDeCima(pecaAtual, tabuleiro, 0, new Coordenada[8], false);
 
             } else { // Peças do Jogador de Baixo
-
-
-
+                return esquerdaRainha.buscarCoordenadaJogadorDeBaixo(pecaAtual, tabuleiro, 0, new Coordenada[8], false);
             }
         }
-
-        return null;
     }
 }
 
