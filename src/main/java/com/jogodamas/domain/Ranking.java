@@ -26,17 +26,29 @@ public class Ranking {
     jogadores.put(jogador);
 }
 
-public void registrarEmpate(String nome) {
-    JogadorRanking jogador = buscarJogadorObj(nome);
-    if (jogador == null) {
-        adicionarJogador(nome);
-        jogador = buscarJogadorObj(nome);
+    public void registrarEmpate(String nome) {
+        JogadorRanking jogador = buscarJogadorObj(nome);
+        if (jogador == null) {
+            adicionarJogador(nome);
+            jogador = buscarJogadorObj(nome);
+        }
+
+        jogadores.remover(jogador); // REMOVE antes de atualizar
+        jogador.registrarEmpate();
+        jogadores.put(jogador);
     }
 
-    jogadores.remover(jogador); // REMOVE antes de atualizar
-    jogador.registrarEmpate();
-    jogadores.put(jogador);
-}
+    public void registrarDerrota(String nome) {
+        JogadorRanking jogador = buscarJogadorObj(nome);
+        if (jogador == null) {
+            adicionarJogador(nome);
+            jogador = buscarJogadorObj(nome);
+        }
+
+        jogadores.remover(jogador);  // REMOVE antes de atualizar
+        jogador.registrarDerrota();
+        jogadores.put(jogador);
+    }
 
   public JogadorRanking[] gerarRanking() {
       return jogadores.values(JogadorRanking.class);

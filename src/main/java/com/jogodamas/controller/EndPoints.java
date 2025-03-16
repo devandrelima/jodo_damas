@@ -37,7 +37,11 @@ public class EndPoints {
             peca.setRainha(true);
         }
 
-        relatorioJogadas.push(new JogadaParaRelatorio(jogada, numeroJogador)); // Guarda a jogada no relatório
+        if(numeroJogador == 1) {
+            relatorioJogadas.push(new JogadaParaRelatorio(jogada, jogo.getJogador1().getNome())); // Guarda a jogada no relatório
+        } else {
+            relatorioJogadas.push(new JogadaParaRelatorio(jogada, jogo.getJogador2().getNome())); // Guarda a jogada no relatório
+        }
 
         jogo.exibirTabuleiro(); // Usado apenas pelo backend para jogar no console
 
@@ -47,6 +51,8 @@ public class EndPoints {
         if(jogo.getJogador1().getPilhaPecas().getTam() == 12) {
 
             ranking.registrarVitoria(jogo.getJogador1().getNome());
+            ranking.registrarDerrota(jogo.getJogador2().getNome());
+
             jogo.getJogador1().setNome("Jogador 1");
             jogo.getJogador2().setNome("Jogador 2");
 
@@ -54,6 +60,8 @@ public class EndPoints {
 
         } else if (jogo.getJogador2().getPilhaPecas().getTam() == 12){
             ranking.registrarVitoria(jogo.getJogador2().getNome());
+            ranking.registrarDerrota(jogo.getJogador1().getNome());
+
             jogo.getJogador1().setNome("Jogador 1");
             jogo.getJogador2().setNome("Jogador 2");
 
@@ -81,7 +89,7 @@ public class EndPoints {
             writer.write("Relatório de Jogadas:\n");
             for (Object obj : jogadasArray) {
                 if (obj instanceof JogadaParaRelatorio jogada) {
-                    writer.write("Jogador " + jogada.getNumeroJogador() + ": " + jogada.getJogada().toString() + "\n");
+                    writer.write("Jogador " + jogada.getNomeJogador() + ": (" + jogada.getJogada().coordenada().getX() + ", " + jogada.getJogada().coordenada().getY() + ")" + "\n");
                 }
             }
             return ResponseEntity.ok("Relatório gerado com sucesso: " + file.getAbsolutePath());
@@ -123,6 +131,7 @@ public class EndPoints {
         this.relatorioJogadas = new Pilha<>(); // Resetar jogadas ao reiniciar
         System.out.println("reset");
         jogo.resetarTabuleiro();
+        jogo.setAcabou(false);
     }
 
     @PutMapping("/empate")

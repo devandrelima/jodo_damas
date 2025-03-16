@@ -1,16 +1,23 @@
 package com.jogodamas.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class JogadorRanking implements Comparable<JogadorRanking> {
   String nome;
   int vitorias;
   int empates;
   int partidas;
+  int derrotas;
 
   public JogadorRanking(String nome) {
       this.nome = nome;
       this.vitorias = 0;
       this.empates = 0;
       this.partidas = 0;
+      this.derrotas = 0;
   }
 
   public void registrarVitoria() {
@@ -22,6 +29,11 @@ public class JogadorRanking implements Comparable<JogadorRanking> {
       empates++;
       partidas++;
   }
+
+  public void registrarDerrota() {
+    derrotas++;
+    partidas++;
+}
 
   @Override
   public int compareTo(JogadorRanking outro) {
