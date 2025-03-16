@@ -1,10 +1,13 @@
 package com.jogodamas.domain;
 
+
 public class Jogo {
     private boolean acabou;
     private Peca tabuleiro[][];
     private Jogador jogador1;
     private Jogador jogador2;
+    private boolean botAtivo = false;
+    private BotJogador bot;
 
     public Jogo(){
         acabou = false;
@@ -36,111 +39,28 @@ public class Jogo {
         int novoY = proxCoordenada.getY();
 
         // Lógica para eliminar peça do jogo
-        tabuleiro[peca.getCoordenadas().getX()][peca.getCoordenadas().getY()] = null;
+        if((novoX == peca.getCoordenadas().getX() + 2) || (novoX == peca.getCoordenadas().getX() - 2)){
+            if((novoY == peca.getCoordenadas().getY() + 2) || (novoY == peca.getCoordenadas().getY() - 2)){
+                int coordenadaXPontoMedio = (novoX + peca.getCoordenadas().getX()) / 2;
+                int coordenadaYPontoMedio = (novoY + peca.getCoordenadas().getY()) / 2;
 
-        if(!peca.isRainha()){
-            if((novoX == peca.getCoordenadas().getX() + 2) || (novoX == peca.getCoordenadas().getX() - 2)){
-                if((novoY == peca.getCoordenadas().getY() + 2) || (novoY == peca.getCoordenadas().getY() - 2)){
-                    int coordenadaXPontoMedio = (novoX + peca.getCoordenadas().getX()) / 2;
-                    int coordenadaYPontoMedio = (novoY + peca.getCoordenadas().getY()) / 2;
+                Peca PecaEliminada = tabuleiro[coordenadaXPontoMedio][coordenadaYPontoMedio];
 
-                    Peca PecaEliminada = tabuleiro[coordenadaXPontoMedio][coordenadaYPontoMedio];
-
-                    if(PecaEliminada.getId() <= 11){
-                        jogador1.getPilhaPecas().push(PecaEliminada);
-                    } else {
-                        jogador2.getPilhaPecas().push(PecaEliminada);
-                    }
-
-                    tabuleiro[coordenadaXPontoMedio][coordenadaYPontoMedio] = null;
-                }
-            }
-        } else {
-
-            int pecaX = peca.getCoordenadas().getX();
-            int pecaY = peca.getCoordenadas().getY();
-
-            if(pecaX < novoX){
-                if(pecaY < novoY){
-                    for(int i = pecaX, j = pecaY; i < novoX && j < novoY; i++, j++){
-                        if(tabuleiro[i][j] != null){
-
-                            Peca PecaEliminada = tabuleiro[i][j];
-
-                            if(PecaEliminada.getId() <= 11){
-                                jogador1.getPilhaPecas().push(PecaEliminada);
-                            } else {
-                                jogador2.getPilhaPecas().push(PecaEliminada);
-                            }
-
-                            tabuleiro[i][j] = null;
-                        }
-                    }
+                if(PecaEliminada.getId() <= 11){
+                    jogador1.getPilhaPecas().push(PecaEliminada);
                 } else {
-                    for(int i = pecaX, j = pecaY; i < novoX && j > novoY; i++, j--){
-                        if(tabuleiro[i][j] != null){
-
-                            Peca PecaEliminada = tabuleiro[i][j];
-
-                            if(PecaEliminada.getId() <= 11){
-                                jogador1.getPilhaPecas().push(PecaEliminada);
-                            } else {
-                                jogador2.getPilhaPecas().push(PecaEliminada);
-                            }
-
-                            tabuleiro[i][j] = null;
-                        }
-                    }
+                    jogador2.getPilhaPecas().push(PecaEliminada);
                 }
-            } else {
-                if(pecaY < novoY){
-                    for(int i = pecaX, j = pecaY; i > novoX && j < novoY; i--, j++){
-                        if(tabuleiro[i][j] != null){
 
-                            Peca PecaEliminada = tabuleiro[i][j];
-
-                            if(PecaEliminada.getId() <= 11){
-                                jogador1.getPilhaPecas().push(PecaEliminada);
-                            } else {
-                                jogador2.getPilhaPecas().push(PecaEliminada);
-                            }
-
-                            tabuleiro[i][j] = null;
-                        }
-                    }
-                } else {
-                    for(int i = pecaX, j = pecaY; i > novoX && j > novoY; i--, j--){
-                        if(tabuleiro[i][j] != null){
-
-                            Peca PecaEliminada = tabuleiro[i][j];
-
-                            if(PecaEliminada.getId() <= 11){
-                                jogador1.getPilhaPecas().push(PecaEliminada);
-                            } else {
-                                jogador2.getPilhaPecas().push(PecaEliminada);
-                            }
-
-                            tabuleiro[i][j] = null;
-                        }
-                    }
-                }
+                tabuleiro[coordenadaXPontoMedio][coordenadaYPontoMedio] = null;
             }
         }
 
+        tabuleiro[peca.getCoordenadas().getX()][peca.getCoordenadas().getY()] = null;
         tabuleiro[novoX][novoY] = peca;
 
         peca.getCoordenadas().setX(novoX);
         peca.getCoordenadas().setY(novoY);
-
-        // Quando a peça de cima chegar na última linha, vira dama
-        if((peca.getId() <= 11) && peca.getCoordenadas().getX() == 7){
-            peca.setRainha(true);
-        }
-
-        // Quando a peça de baixo chegar na primeira linha, vira dama
-        if((peca.getId() >= 12 ) && peca.getCoordenadas().getX() == 0){
-            peca.setRainha(true);
-        }
 
         return peca;
     }
@@ -218,6 +138,26 @@ public class Jogo {
                     tabuleiro[i][j] = new Peca(false, contador++, new Coordenada(i,j));
                 }
             }
+        }
+    }
+
+    public void ativarBot() {
+        this.bot = new BotJogador(this);
+        this.botAtivo = true;
+    }
+
+    public void desativarBot() {
+        this.bot = null;
+        this.botAtivo = false;
+    }
+
+    public boolean isBotAtivo() {
+        return botAtivo;
+    }
+    
+    public void jogarBot() {
+        if (botAtivo && bot != null) {
+            bot.jogar();
         }
     }
 
