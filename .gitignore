@@ -19,6 +19,8 @@ target/
 *.iml
 *.ipr
 
+relatorio_jogadas.txt
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/

@@ -20,7 +20,7 @@ public class BotJogador {
             if (peca == null) continue;
             
             ListaEncadeada<Coordenada> movimentos = calcularMovimentosPossiveis(peca);
-            for (Coordenada movimento : movimentos.paraArray()) {
+            for (Coordenada movimento : movimentos.paraArray(Coordenada.class)) {
                 int valor = avaliarMovimento(peca, movimento);
                 if (valor > melhorValor) {
                     melhorValor = valor;

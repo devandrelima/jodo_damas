@@ -4,9 +4,9 @@ import com.jogodamas.dto.Jogada;
 
 public class JogadaParaRelatorio {
     Jogada jogada;
-    int jogador;
+    String jogador;
 
-    public JogadaParaRelatorio(Jogada jogada, int jogador) {
+    public JogadaParaRelatorio(Jogada jogada, String jogador) {
         this.jogada = jogada;
         this.jogador = jogador;
     }
@@ -15,7 +15,7 @@ public class JogadaParaRelatorio {
         return jogada;
     }
     
-    public int getNumeroJogador() {
+    public String getNomeJogador() {
         return jogador;
     }
 }

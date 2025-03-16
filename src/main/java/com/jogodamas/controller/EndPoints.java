@@ -1,6 +1,7 @@
 package com.jogodamas.controller;
 import com.jogodamas.domain.*;
 import com.jogodamas.dto.Jogada;
+import com.jogodamas.dto.NomesJogadoresRequest;
 import com.jogodamas.dto.PossiveisJogadas;
 import com.jogodamas.dto.StatusJogoAtual;
 import com.jogodamas.services.Calculador;
@@ -48,7 +49,16 @@ public class EndPoints {
             peca.setRainha(true);
         }
 
-        relatorioJogadas.push(new JogadaParaRelatorio(jogada, numeroJogador)); // Guarda a jogada no relatório
+        // Quando a peça de baixo chegar na primeira linha, vira dama
+        if((peca.getId() >= 12 && peca.getId() <= 23) && peca.getCoordenadas().getX() == 0){
+            peca.setRainha(true);
+        }
+
+        if(numeroJogador == 1) {
+            relatorioJogadas.push(new JogadaParaRelatorio(jogada, jogo.getJogador1().getNome())); // Guarda a jogada no relatório
+        } else {
+            relatorioJogadas.push(new JogadaParaRelatorio(jogada, jogo.getJogador2().getNome())); // Guarda a jogada no relatório
+        }
 
         jogo.exibirTabuleiro(); // Usado apenas pelo backend para jogar no console
 
@@ -56,22 +66,34 @@ public class EndPoints {
 
         // quando uma das pilha encher, quer dizer que o jogo acabou
         if(jogo.getJogador1().getPilhaPecas().getTam() == 12) {
+            ranking.registrarVitoria(jogo.getJogador2().getNome());
+            ranking.registrarDerrota(jogo.getJogador1().getNome());
 
+            jogo.getJogador1().setNome(jogo.getJogador1().getNome());
+            jogo.getJogador2().setNome(jogo.getJogador2().getNome());
+
+            jogo.setAcabou(true);
+
+            return ResponseEntity.ok(new StatusJogoAtual(peca,
+                                                     jogo.getJogador1().getPilhaPecas().getObjetosPilha(),
+                                                     jogo.getJogador2().getPilhaPecas().getObjetosPilha(),
+                                                     true)); // Retorno a peça com a nova posição
+        } else if (jogo.getJogador2().getPilhaPecas().getTam() == 12){
             ranking.registrarVitoria(jogo.getJogador1().getNome());
+            ranking.registrarDerrota(jogo.getJogador2().getNome());
+
+            jogo.getJogador1().setNome(jogo.getJogador1().getNome());
+            jogo.getJogador2().setNome(jogo.getJogador2().getNome());
+
             jogo.setAcabou(true);
             return ResponseEntity.ok(new StatusJogoAtual(peca,
                                                      jogo.getJogador1().getPilhaPecas().getObjetosPilha(),
                                                      jogo.getJogador2().getPilhaPecas().getObjetosPilha(),
                                                      true));
 
-        } else if (jogo.getJogador2().getPilhaPecas().getTam() == 12){
-            ranking.registrarVitoria(jogo.getJogador2().getNome());
-            jogo.setAcabou(true);
-            return ResponseEntity.ok(new StatusJogoAtual(peca,
-                                                     jogo.getJogador1().getPilhaPecas().getObjetosPilha(),
-                                                     jogo.getJogador2().getPilhaPecas().getObjetosPilha(),
-                                                     jogo.getAcabou())); // Retorno a peça com a nova posição
-        }
+
+
+        } 
 
         if (jogo.isBotAtivo() && jogador % 2 == 1) { 
             jogo.jogarBot();
@@ -99,7 +121,7 @@ public class EndPoints {
             writer.write("Relatório de Jogadas:\n");
             for (Object obj : jogadasArray) {
                 if (obj instanceof JogadaParaRelatorio jogada) {
-                    writer.write("Jogador " + jogada.getNumeroJogador() + ": " + jogada.getJogada().toString() + "\n");
+                    writer.write("Jogador " + jogada.getNomeJogador() + ": (" + jogada.getJogada().coordenada().getX() + ", " + jogada.getJogada().coordenada().getY() + ")" + "\n");
                 }
             }
             return ResponseEntity.ok("Relatório gerado com sucesso: " + file.getAbsolutePath());
@@ -129,12 +151,19 @@ public class EndPoints {
         return ResponseEntity.ok(possiveisJogadas.getCoordenadas());
     }
 
+    @PutMapping("/definirnomes")
+    public void definirNomeJogador(@RequestBody NomesJogadoresRequest request) {
+        jogo.getJogador1().setNome(request.nome1());
+        jogo.getJogador2().setNome(request.nome2());
+    }
+
     @PutMapping("/reset")
     public void reset(){
         this.jogador = 0;
         this.relatorioJogadas = new Pilha<>(); // Resetar jogadas ao reiniciar
         System.out.println("reset");
         jogo.resetarTabuleiro();
+        jogo.setAcabou(false);
     }
 
     @PutMapping("/empate")
