@@ -15,7 +15,7 @@ public class BotJogador {
         int melhorValor = Integer.MIN_VALUE;
         boolean temCaptura = false;
 
-        for (int id = 12; id <= 23; id++) { // IDs das peças do jogador 2 (bot)
+        for (int id = 0; id <= 11; id++) { // IDs das peças do jogador 2 (bot)
             Peca peca = jogo.buscarPecaPorID(id);
             if (peca == null) continue;
             
@@ -83,7 +83,7 @@ public class BotJogador {
     private boolean ehCapturaValida(int x, int y, int capturarX, int capturarY) {
         if (capturarX < 0 || capturarX >= 8 || capturarY < 0 || capturarY >= 8) return false;
         Peca alvo = jogo.buscarPecaPorCoordenada(new Coordenada((x + capturarX) / 2, (y + capturarY) / 2));
-        return alvo != null && alvo.getId() < 12; // Deve ser peça do oponente
+        return alvo != null && alvo.getId() > 11; // Deve ser peça do oponente
     }
 
     private int avaliarMovimento(Peca peca, Coordenada movimento) {

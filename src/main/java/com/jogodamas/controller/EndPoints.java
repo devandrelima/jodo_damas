@@ -181,7 +181,7 @@ public ResponseEntity<StatusJogoAtual> moverBot() {
     // Busca a última peça movida
     Peca ultimaPecaMovida = jogo.getUltimaPecaMovida();
 
-    if ((ultimaPecaMovida.getId() >= 12 && ultimaPecaMovida.getId() <= 23) && 
+    if ((ultimaPecaMovida.getId() >= 0 && ultimaPecaMovida.getId() <= 11) && 
          ultimaPecaMovida.getCoordenadas().getX() == 0) {
         ultimaPecaMovida.setRainha(true);
     }
