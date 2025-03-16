@@ -1,4 +1,5 @@
 package com.jogodamas.domain;
+import java.lang.reflect.Array;
 
 class NoLista<V> {
   V valor;
@@ -33,15 +34,16 @@ class ListaEncadeada<V> {
       tamanho++;
   }
 
-  public V[] paraArray() {
-      @SuppressWarnings("unchecked")
-      V[] array = (V[]) new Object[tamanho]; 
-      NoLista<V> atual = cabeca;
-      int i = 0;
-      while (atual != null) {
-          array[i++] = atual.valor;
-          atual = atual.proximo;
-      }
-      return array;
-  }
+  public V[] paraArray(Class<V> clazz) {
+    @SuppressWarnings("unchecked")
+    V[] array = (V[]) Array.newInstance(clazz, tamanho);
+    
+    NoLista<V> atual = cabeca;
+    int i = 0;
+    while (atual != null) {
+        array[i++] = atual.valor;
+        atual = atual.proximo;
+    }
+    return array;
+}
 }
