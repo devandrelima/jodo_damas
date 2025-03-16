@@ -87,8 +87,8 @@ public class BotJogador {
         if (peca.isRainha()) return true;
     
         // Peças normais só podem andar para frente
-        if ((peca.getId() >= 0 && peca.getId() <= 11 && x <= peca.getCoordenadas().getX()) || // O bot só pode andar para frente (x aumentando)
-            (peca.getId() >= 12 && peca.getId() <= 23 && x >= peca.getCoordenadas().getX())) { // O jogador só pode andar para frente (x diminuindo)
+        if ((peca.getId() >= 0 && peca.getId() <= 11 && x <= peca.getCoordenadas().getX())) {
+            // O jogador só pode andar para frente (x diminuindo)
             return false;
         }
     

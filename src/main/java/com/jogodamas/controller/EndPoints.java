@@ -196,6 +196,8 @@ public ResponseEntity<StatusJogoAtual> moverBot() {
         jogo.setAcabou(true);
     }
 
+    jogador++;
+
     return ResponseEntity.ok(new StatusJogoAtual(
         ultimaPecaMovida,
         jogo.getJogador1().getPilhaPecas().getObjetosPilha(),
