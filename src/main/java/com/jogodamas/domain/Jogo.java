@@ -36,6 +36,7 @@ public class Jogo {
         int novoY = proxCoordenada.getY();
 
         // Lógica para eliminar peça do jogo
+        tabuleiro[peca.getCoordenadas().getX()][peca.getCoordenadas().getY()] = null;
 
         if(!peca.isRainha()){
             if((novoX == peca.getCoordenadas().getX() + 2) || (novoX == peca.getCoordenadas().getX() - 2)){
@@ -126,7 +127,6 @@ public class Jogo {
             }
         }
 
-        tabuleiro[peca.getCoordenadas().getX()][peca.getCoordenadas().getY()] = null;
         tabuleiro[novoX][novoY] = peca;
 
         peca.getCoordenadas().setX(novoX);
