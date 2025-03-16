@@ -47,10 +47,16 @@ public class EndPoints {
         if(jogo.getJogador1().getPilhaPecas().getTam() == 12) {
 
             ranking.registrarVitoria(jogo.getJogador1().getNome());
+            jogo.getJogador1().setNome("Jogador 1");
+            jogo.getJogador2().setNome("Jogador 2");
+
             jogo.setAcabou(true);
 
         } else if (jogo.getJogador2().getPilhaPecas().getTam() == 12){
             ranking.registrarVitoria(jogo.getJogador2().getNome());
+            jogo.getJogador1().setNome("Jogador 1");
+            jogo.getJogador2().setNome("Jogador 2");
+
             jogo.setAcabou(true);
         }
 
