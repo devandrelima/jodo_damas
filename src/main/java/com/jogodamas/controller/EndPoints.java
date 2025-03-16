@@ -1,6 +1,7 @@
 package com.jogodamas.controller;
 import com.jogodamas.domain.*;
 import com.jogodamas.dto.Jogada;
+import com.jogodamas.dto.NomesJogadoresRequest;
 import com.jogodamas.dto.PossiveisJogadas;
 import com.jogodamas.dto.StatusJogoAtual;
 import com.jogodamas.services.Calculador;
@@ -102,6 +103,12 @@ public class EndPoints {
         possiveisJogadas.addAllCoordenada(calculador.calcularPossiveisJogadas(id, jogo));
 
         return ResponseEntity.ok(possiveisJogadas.getCoordenadas());
+    }
+
+    @PutMapping("/definirnomes")
+    public void definirNomeJogador(@RequestBody NomesJogadoresRequest request) {
+        jogo.getJogador1().setNome(request.nome1());
+        jogo.getJogador2().setNome(request.nome2());
     }
 
     @PutMapping("/reset")
