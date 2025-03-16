@@ -74,10 +74,6 @@ public class EndPoints {
 
             jogo.setAcabou(true);
 
-            return ResponseEntity.ok(new StatusJogoAtual(peca,
-                                                     jogo.getJogador1().getPilhaPecas().getObjetosPilha(),
-                                                     jogo.getJogador2().getPilhaPecas().getObjetosPilha(),
-                                                     true)); // Retorno a peça com a nova posição
         } else if (jogo.getJogador2().getPilhaPecas().getTam() == 12){
             ranking.registrarVitoria(jogo.getJogador1().getNome());
             ranking.registrarDerrota(jogo.getJogador2().getNome());
@@ -86,19 +82,10 @@ public class EndPoints {
             jogo.getJogador2().setNome(jogo.getJogador2().getNome());
 
             jogo.setAcabou(true);
-            return ResponseEntity.ok(new StatusJogoAtual(peca,
-                                                     jogo.getJogador1().getPilhaPecas().getObjetosPilha(),
-                                                     jogo.getJogador2().getPilhaPecas().getObjetosPilha(),
-                                                     true));
-
-
+        
 
         } 
 
-        if (jogo.isBotAtivo() && jogador % 2 == 1) { 
-            jogo.jogarBot();
-            jogador++;  // Passa a vez para o Jogador 1 novamente
-        }
 
         return ResponseEntity.ok(new StatusJogoAtual(peca,
                                                      jogo.getJogador1().getPilhaPecas().getObjetosPilha(),
@@ -178,5 +165,21 @@ public class EndPoints {
     public ResponseEntity<JogadorRanking[]> obterRanking() {
         return ResponseEntity.ok(ranking.gerarRanking()); // ⬅ Retorna ranking atualizado
     }
+
+    @PutMapping("/moverbot")
+public ResponseEntity<String> moverBot() {
+    if (!jogo.isBotAtivo()) {
+        return ResponseEntity.badRequest().body("O bot não está ativado.");
+    }
+    
+    if (jogo.getAcabou()) {
+        return ResponseEntity.badRequest().body("O jogo já acabou.");
+    }
+
+    jogo.jogarBot(); 
+
+    return ResponseEntity.ok("O bot realizou sua jogada.");
+}
+
 
 }

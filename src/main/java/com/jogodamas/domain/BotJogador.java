@@ -1,6 +1,5 @@
 package com.jogodamas.domain;
 
-
 public class BotJogador {
     private Jogo jogo;
     
@@ -9,28 +8,41 @@ public class BotJogador {
     }
 
     public void jogar() {
-        if (jogo.getAcabou()) return;
+        if (jogo.getAcabou()) return; 
         
         Peca melhorPeca = null;
         Coordenada melhorMovimento = null;
         int melhorValor = Integer.MIN_VALUE;
+        boolean temCaptura = false;
 
-        for (int id = 12; id <= 23; id++) { // IDs das peças do jogador 2
+        for (int id = 12; id <= 23; id++) { // IDs das peças do jogador 2 (bot)
             Peca peca = jogo.buscarPecaPorID(id);
             if (peca == null) continue;
             
             ListaEncadeada<Coordenada> movimentos = calcularMovimentosPossiveis(peca);
-            for (Coordenada movimento : movimentos.paraArray(Coordenada.class)) {
+            Coordenada[] movimentosArray = movimentos.paraArray(Coordenada.class); 
+
+            for (Coordenada movimento : movimentosArray) {
                 int valor = avaliarMovimento(peca, movimento);
-                if (valor > melhorValor) {
+
+                if (valor >= 10) { // Se for captura, o bot deve capturar
+                    melhorPeca = peca;
+                    melhorMovimento = movimento;
+                    temCaptura = true;
+                    break; // Para de procurar, pois achou uma captura obrigatória
+                }
+
+                if (!temCaptura && valor > melhorValor) {
                     melhorValor = valor;
                     melhorPeca = peca;
                     melhorMovimento = movimento;
                 }
             }
+
+            if (temCaptura) break; // Se encontrou captura, para de procurar
         }
-        
-        if (melhorPeca != null && melhorMovimento != null) {
+
+        if (!jogo.getAcabou() && melhorPeca != null && melhorMovimento != null) {  //  Evita jogar se o jogo acabou
             try {
                 jogo.moverPeca(melhorMovimento, melhorPeca);
             } catch (Exception e) {
@@ -83,11 +95,11 @@ public class BotJogador {
         }
         
         if (ehCapturaValida(peca.getCoordenadas().getX(), peca.getCoordenadas().getY(), x, movimento.getY())) {
-            valor += 10; // Captura vale muito
+            valor += 10; // Captura tem pontuação alta (deve ser obrigatória)
         }
         
         if (x == 0) {
-            valor += 7; // Chegar ao final do tabuleiro para virar rainha
+            valor += 7; //  Chegar ao final do tabuleiro para virar rainha
         }
         
         return valor;
