@@ -8,6 +8,7 @@ public class Jogo {
     private Jogador jogador2;
     private boolean botAtivo = false;
     private BotJogador bot;
+    private Peca ultimaPecaMovida;
 
     public Jogo(){
         acabou = false;
@@ -32,6 +33,10 @@ public class Jogo {
 
     public void setAcabou(boolean acabou){
         this.acabou = acabou;
+    }
+
+    public Peca getUltimaPecaMovida() {
+        return this.ultimaPecaMovida;
     }
 
     public Peca moverPeca(Coordenada proxCoordenada, Peca peca) throws Exception {
@@ -61,6 +66,8 @@ public class Jogo {
 
         peca.getCoordenadas().setX(novoX);
         peca.getCoordenadas().setY(novoY);
+
+        this.ultimaPecaMovida = peca;
 
         return peca;
     }

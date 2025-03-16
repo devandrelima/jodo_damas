@@ -167,18 +167,41 @@ public class EndPoints {
     }
 
     @PutMapping("/moverbot")
-public ResponseEntity<String> moverBot() {
+public ResponseEntity<StatusJogoAtual> moverBot() {
     if (!jogo.isBotAtivo()) {
-        return ResponseEntity.badRequest().body("O bot não está ativado.");
+        return ResponseEntity.badRequest().body(null);
     }
     
     if (jogo.getAcabou()) {
-        return ResponseEntity.badRequest().body("O jogo já acabou.");
+        return ResponseEntity.badRequest().body(null);
     }
 
     jogo.jogarBot(); 
 
-    return ResponseEntity.ok("O bot realizou sua jogada.");
+    // Busca a última peça movida
+    Peca ultimaPecaMovida = jogo.getUltimaPecaMovida();
+
+    if ((ultimaPecaMovida.getId() >= 12 && ultimaPecaMovida.getId() <= 23) && 
+         ultimaPecaMovida.getCoordenadas().getX() == 0) {
+        ultimaPecaMovida.setRainha(true);
+    }
+
+    if (jogo.getJogador1().getPilhaPecas().getTam() == 12) {
+        ranking.registrarVitoria(jogo.getJogador2().getNome());
+        ranking.registrarDerrota(jogo.getJogador1().getNome());
+        jogo.setAcabou(true);
+    } else if (jogo.getJogador2().getPilhaPecas().getTam() == 12) {
+        ranking.registrarVitoria(jogo.getJogador1().getNome());
+        ranking.registrarDerrota(jogo.getJogador2().getNome());
+        jogo.setAcabou(true);
+    }
+
+    return ResponseEntity.ok(new StatusJogoAtual(
+        ultimaPecaMovida,
+        jogo.getJogador1().getPilhaPecas().getObjetosPilha(),
+        jogo.getJogador2().getPilhaPecas().getObjetosPilha(),
+        jogo.getAcabou()
+    ));
 }
 
 
