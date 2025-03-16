@@ -50,8 +50,8 @@ public class EndPoints {
         // quando uma das pilha encher, quer dizer que o jogo acabou
         if(jogo.getJogador1().getPilhaPecas().getTam() == 12) {
 
-            ranking.registrarVitoria(jogo.getJogador1().getNome());
-            ranking.registrarDerrota(jogo.getJogador2().getNome());
+            ranking.registrarVitoria(jogo.getJogador2().getNome());
+            ranking.registrarDerrota(jogo.getJogador1().getNome());
 
             jogo.getJogador1().setNome("Jogador 1");
             jogo.getJogador2().setNome("Jogador 2");
@@ -59,8 +59,8 @@ public class EndPoints {
             jogo.setAcabou(true);
 
         } else if (jogo.getJogador2().getPilhaPecas().getTam() == 12){
-            ranking.registrarVitoria(jogo.getJogador2().getNome());
-            ranking.registrarDerrota(jogo.getJogador1().getNome());
+            ranking.registrarVitoria(jogo.getJogador1().getNome());
+            ranking.registrarDerrota(jogo.getJogador2().getNome());
 
             jogo.getJogador1().setNome("Jogador 1");
             jogo.getJogador2().setNome("Jogador 2");
