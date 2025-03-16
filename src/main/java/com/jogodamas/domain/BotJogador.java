@@ -61,7 +61,7 @@ public class BotJogador {
             for (int dy : direcoes) {
                 int novoX = x + dx;
                 int novoY = y + dy;
-                if (ehMovimentoValido(novoX, novoY)) {
+                if (ehMovimentoValido(novoX, novoY, peca)) {
                     movimentos.adicionar(new Coordenada(novoX, novoY));
                 }
 
@@ -76,12 +76,29 @@ public class BotJogador {
         return movimentos;
     }
 
-    private boolean ehMovimentoValido(int x, int y) {
-        return x >= 0 && x < 8 && y >= 0 && y < 8 && jogo.buscarPecaPorCoordenada(new Coordenada(x, y)) == null;
+    private boolean ehMovimentoValido(int x, int y, Peca peca) {
+        // O movimento precisa estar dentro do tabuleiro
+        if (x < 0 || x >= 8 || y < 0 || y >= 8) return false;
+    
+        // A posição final precisa estar vazia
+        if (jogo.buscarPecaPorCoordenada(new Coordenada(x, y)) != null) return false;
+    
+        // Se a peça for uma dama, pode andar para qualquer lado
+        if (peca.isRainha()) return true;
+    
+        // Peças normais só podem andar para frente
+        if ((peca.getId() >= 0 && peca.getId() <= 11 && x <= peca.getCoordenadas().getX()) || // O bot só pode andar para frente (x aumentando)
+            (peca.getId() >= 12 && peca.getId() <= 23 && x >= peca.getCoordenadas().getX())) { // O jogador só pode andar para frente (x diminuindo)
+            return false;
+        }
+    
+        return true;
     }
 
     private boolean ehCapturaValida(int x, int y, int capturarX, int capturarY) {
         if (capturarX < 0 || capturarX >= 8 || capturarY < 0 || capturarY >= 8) return false;
+        if (jogo.buscarPecaPorCoordenada(new Coordenada(capturarX, capturarY)) != null) return false;
+
         Peca alvo = jogo.buscarPecaPorCoordenada(new Coordenada((x + capturarX) / 2, (y + capturarY) / 2));
         return alvo != null && alvo.getId() > 11; // Deve ser peça do oponente
     }
