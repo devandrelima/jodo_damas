@@ -1,5 +1,7 @@
 package com.jogodamas.domain;
 
+import com.jogodamas.services.Calculador;
+
 public class BotJogador {
     private Jogo jogo;
     
@@ -15,14 +17,16 @@ public class BotJogador {
         int melhorValor = Integer.MIN_VALUE;
         boolean temCaptura = false;
 
+        Calculador calculador = new Calculador();
+
         for (int id = 0; id <= 11; id++) { // IDs das peças do jogador 2 (bot)
             Peca peca = jogo.buscarPecaPorID(id);
             if (peca == null) continue;
             
-            ListaEncadeada<Coordenada> movimentos = calcularMovimentosPossiveis(peca);
-            Coordenada[] movimentosArray = movimentos.paraArray(Coordenada.class); 
+            Coordenada[] movimentos = calculador.calcularPossiveisJogadas(peca.getId(), jogo);
 
-            for (Coordenada movimento : movimentosArray) {
+            for (Coordenada movimento : movimentos) {
+                if (movimento == null) continue;
                 int valor = avaliarMovimento(peca, movimento);
 
                 if (valor >= 10) { // Se for captura, o bot deve capturar
@@ -49,50 +53,6 @@ public class BotJogador {
                 e.printStackTrace();
             }
         }
-    }
-
-    private ListaEncadeada<Coordenada> calcularMovimentosPossiveis(Peca peca) {
-        ListaEncadeada<Coordenada> movimentos = new ListaEncadeada<>();
-        int x = peca.getCoordenadas().getX();
-        int y = peca.getCoordenadas().getY();
-
-        int[] direcoes = {-1, 1}; // Movimentos diagonais
-        for (int dx : direcoes) {
-            for (int dy : direcoes) {
-                int novoX = x + dx;
-                int novoY = y + dy;
-                if (ehMovimentoValido(novoX, novoY, peca)) {
-                    movimentos.adicionar(new Coordenada(novoX, novoY));
-                }
-
-                // Verificar capturas
-                int capturarX = x + 2 * dx;
-                int capturarY = y + 2 * dy;
-                if (ehCapturaValida(x, y, capturarX, capturarY)) {
-                    movimentos.adicionar(new Coordenada(capturarX, capturarY));
-                }
-            }
-        }
-        return movimentos;
-    }
-
-    private boolean ehMovimentoValido(int x, int y, Peca peca) {
-        // O movimento precisa estar dentro do tabuleiro
-        if (x < 0 || x >= 8 || y < 0 || y >= 8) return false;
-    
-        // A posição final precisa estar vazia
-        if (jogo.buscarPecaPorCoordenada(new Coordenada(x, y)) != null) return false;
-    
-        // Se a peça for uma dama, pode andar para qualquer lado
-        if (peca.isRainha()) return true;
-    
-        // Peças normais só podem andar para frente
-        if ((peca.getId() >= 0 && peca.getId() <= 11 && x <= peca.getCoordenadas().getX())) {
-            // O jogador só pode andar para frente (x diminuindo)
-            return false;
-        }
-    
-        return true;
     }
 
     private boolean ehCapturaValida(int x, int y, int capturarX, int capturarY) {
