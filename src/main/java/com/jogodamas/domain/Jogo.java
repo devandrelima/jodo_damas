@@ -6,6 +6,9 @@ public class Jogo {
     private Peca tabuleiro[][];
     private Jogador jogador1;
     private Jogador jogador2;
+    private boolean botAtivo = false;
+    private BotJogador bot;
+    private Peca ultimaPecaMovida;
 
     public Jogo(){
         acabou = false;
@@ -30,6 +33,10 @@ public class Jogo {
 
     public void setAcabou(boolean acabou){
         this.acabou = acabou;
+    }
+
+    public Peca getUltimaPecaMovida() {
+        return this.ultimaPecaMovida;
     }
 
     public Peca moverPeca(Coordenada proxCoordenada, Peca peca) throws Exception {
@@ -133,6 +140,8 @@ public class Jogo {
         peca.getCoordenadas().setX(novoX);
         peca.getCoordenadas().setY(novoY);
 
+        this.ultimaPecaMovida = peca;
+
         return peca;
     }
 
@@ -209,6 +218,26 @@ public class Jogo {
                     tabuleiro[i][j] = new Peca(false, contador++, new Coordenada(i,j));
                 }
             }
+        }
+    }
+
+    public void ativarBot() {
+        this.bot = new BotJogador(this);
+        this.botAtivo = true;
+    }
+
+    public void desativarBot() {
+        this.bot = null;
+        this.botAtivo = false;
+    }
+
+    public boolean isBotAtivo() {
+        return botAtivo;
+    }
+    
+    public void jogarBot() {
+        if (botAtivo && bot != null) {
+            bot.jogar();
         }
     }
 

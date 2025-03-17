@@ -35,13 +35,14 @@ public class JogadorRanking implements Comparable<JogadorRanking> {
     partidas++;
 }
 
-  @Override
-  public int compareTo(JogadorRanking outro) {
-      // Ordenação decrescente: mais vitórias primeiro
-      if (this.vitorias != outro.vitorias) return Integer.compare(outro.vitorias, this.vitorias);
-      if (this.empates != outro.empates) return Integer.compare(outro.empates, this.empates);
-      return Integer.compare(outro.partidas, this.partidas);
-  }
+@Override
+public int compareTo(JogadorRanking outro) {
+    if (this.vitorias != outro.vitorias) return Integer.compare(outro.vitorias, this.vitorias);
+    if (this.empates != outro.empates) return Integer.compare(outro.empates, this.empates);
+    if (this.partidas != outro.partidas) return Integer.compare(outro.partidas, this.partidas);
+    
+    return this.nome.compareTo(outro.nome);
+}
 
   @Override
   public String toString() {

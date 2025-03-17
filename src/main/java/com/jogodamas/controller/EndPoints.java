@@ -21,6 +21,18 @@ public class EndPoints {
     private Ranking ranking = new Ranking();
     int jogador;
 
+    @PutMapping("/ativarbot")
+    public ResponseEntity<String> ativarBot() {
+        jogo.ativarBot();
+        return ResponseEntity.ok("");
+    }
+
+    @PutMapping("/desativarbot")
+    public ResponseEntity<String> desativarBot() {
+        jogo.desativarBot();
+        return ResponseEntity.ok("");
+    }
+
     @PostMapping("/moverpeca")
     public ResponseEntity<StatusJogoAtual> moverPeca(@RequestBody Jogada jogada) throws Exception {
         Peca peca = jogo.buscarPecaPorID(jogada.id());
@@ -49,24 +61,23 @@ public class EndPoints {
 
         // quando uma das pilha encher, quer dizer que o jogo acabou
         if(jogo.getJogador1().getPilhaPecas().getTam() == 12) {
+            ranking.registrarVitoria(jogo.getJogador2().getNome());
+            ranking.registrarDerrota(jogo.getJogador1().getNome());
 
-            ranking.registrarVitoria(jogo.getJogador1().getNome());
-            ranking.registrarDerrota(jogo.getJogador2().getNome());
-
-            jogo.getJogador1().setNome("Jogador 1");
-            jogo.getJogador2().setNome("Jogador 2");
+            jogo.getJogador1().setNome(jogo.getJogador1().getNome());
+            jogo.getJogador2().setNome(jogo.getJogador2().getNome());
 
             jogo.setAcabou(true);
 
         } else if (jogo.getJogador2().getPilhaPecas().getTam() == 12){
-            ranking.registrarVitoria(jogo.getJogador2().getNome());
-            ranking.registrarDerrota(jogo.getJogador1().getNome());
+            ranking.registrarVitoria(jogo.getJogador1().getNome());
+            ranking.registrarDerrota(jogo.getJogador2().getNome());
 
-            jogo.getJogador1().setNome("Jogador 1");
-            jogo.getJogador2().setNome("Jogador 2");
+            jogo.getJogador1().setNome(jogo.getJogador1().getNome());
+            jogo.getJogador2().setNome(jogo.getJogador2().getNome());
 
             jogo.setAcabou(true);
-        }
+        } 
 
         return ResponseEntity.ok(new StatusJogoAtual(peca,
                                                      jogo.getJogador1().getPilhaPecas().getObjetosPilha(),
@@ -146,5 +157,46 @@ public class EndPoints {
     public ResponseEntity<JogadorRanking[]> obterRanking() {
         return ResponseEntity.ok(ranking.gerarRanking()); // ⬅ Retorna ranking atualizado
     }
+
+    @PutMapping("/moverbot")
+public ResponseEntity<StatusJogoAtual> moverBot() {
+    if (!jogo.isBotAtivo()) {
+        return ResponseEntity.badRequest().body(null);
+    }
+    
+    if (jogo.getAcabou()) {
+        return ResponseEntity.badRequest().body(null);
+    }
+
+    jogo.jogarBot(); 
+
+    // Busca a última peça movida
+    Peca ultimaPecaMovida = jogo.getUltimaPecaMovida();
+
+    if ((ultimaPecaMovida.getId() >= 0 && ultimaPecaMovida.getId() <= 11) && 
+         ultimaPecaMovida.getCoordenadas().getX() == 0) {
+        ultimaPecaMovida.setRainha(true);
+    }
+
+    if (jogo.getJogador1().getPilhaPecas().getTam() == 12) {
+        ranking.registrarVitoria(jogo.getJogador2().getNome());
+        ranking.registrarDerrota(jogo.getJogador1().getNome());
+        jogo.setAcabou(true);
+    } else if (jogo.getJogador2().getPilhaPecas().getTam() == 12) {
+        ranking.registrarVitoria(jogo.getJogador1().getNome());
+        ranking.registrarDerrota(jogo.getJogador2().getNome());
+        jogo.setAcabou(true);
+    }
+
+    jogador++;
+
+    return ResponseEntity.ok(new StatusJogoAtual(
+        ultimaPecaMovida,
+        jogo.getJogador1().getPilhaPecas().getObjetosPilha(),
+        jogo.getJogador2().getPilhaPecas().getObjetosPilha(),
+        jogo.getAcabou()
+    ));
+}
+
 
 }
