@@ -61,8 +61,8 @@ public class EndPoints {
 
         // quando uma das pilha encher, quer dizer que o jogo acabou
         if(jogo.getJogador1().getPilhaPecas().getTam() == 12) {
-            ranking.registrarVitoria(jogo.getJogador2().getNome());
-            ranking.registrarDerrota(jogo.getJogador1().getNome());
+            ranking.registrarVitoria(jogo.getJogador1().getNome());
+            ranking.registrarDerrota(jogo.getJogador2().getNome());
 
             jogo.getJogador1().setNome(jogo.getJogador1().getNome());
             jogo.getJogador2().setNome(jogo.getJogador2().getNome());
@@ -70,8 +70,8 @@ public class EndPoints {
             jogo.setAcabou(true);
 
         } else if (jogo.getJogador2().getPilhaPecas().getTam() == 12){
-            ranking.registrarVitoria(jogo.getJogador1().getNome());
-            ranking.registrarDerrota(jogo.getJogador2().getNome());
+            ranking.registrarVitoria(jogo.getJogador2().getNome());
+            ranking.registrarDerrota(jogo.getJogador1().getNome());
 
             jogo.getJogador1().setNome(jogo.getJogador1().getNome());
             jogo.getJogador2().setNome(jogo.getJogador2().getNome());
@@ -174,17 +174,17 @@ public ResponseEntity<StatusJogoAtual> moverBot() {
     Peca ultimaPecaMovida = jogo.getUltimaPecaMovida();
 
     if ((ultimaPecaMovida.getId() >= 0 && ultimaPecaMovida.getId() <= 11) && 
-         ultimaPecaMovida.getCoordenadas().getX() == 0) {
+         ultimaPecaMovida.getCoordenadas().getX() == 7) {
         ultimaPecaMovida.setRainha(true);
     }
 
     if (jogo.getJogador1().getPilhaPecas().getTam() == 12) {
-        ranking.registrarVitoria(jogo.getJogador2().getNome());
-        ranking.registrarDerrota(jogo.getJogador1().getNome());
-        jogo.setAcabou(true);
-    } else if (jogo.getJogador2().getPilhaPecas().getTam() == 12) {
         ranking.registrarVitoria(jogo.getJogador1().getNome());
         ranking.registrarDerrota(jogo.getJogador2().getNome());
+        jogo.setAcabou(true);
+    } else if (jogo.getJogador2().getPilhaPecas().getTam() == 12) {
+        ranking.registrarVitoria(jogo.getJogador2().getNome());
+        ranking.registrarDerrota(jogo.getJogador1().getNome());
         jogo.setAcabou(true);
     }
 
