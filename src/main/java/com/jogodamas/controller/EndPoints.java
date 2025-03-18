@@ -147,8 +147,7 @@ public class EndPoints {
 
     @PutMapping("/empate")
     public void empate(){
-        ranking.registrarEmpate(jogo.getJogador1().getNome());
-        ranking.registrarEmpate(jogo.getJogador2().getNome());
+        ranking.registrarEmpate(jogo.getJogador1().getNome(), jogo.getJogador2().getNome());
         jogo.setAcabou(true);
         jogo.resetarTabuleiro();
     }
@@ -159,7 +158,8 @@ public class EndPoints {
     }
 
     @PutMapping("/moverbot")
-public ResponseEntity<StatusJogoAtual> moverBot() {
+public ResponseEntity<StatusJogoAtual> moverBot() throws Exception {
+
     if (!jogo.isBotAtivo()) {
         return ResponseEntity.badRequest().body(null);
     }
@@ -173,11 +173,15 @@ public ResponseEntity<StatusJogoAtual> moverBot() {
     // Busca a última peça movida
     Peca ultimaPecaMovida = jogo.getUltimaPecaMovida();
 
+     // Registra a jogada do bot no relatório
+     Jogada jogadaBot = new Jogada(ultimaPecaMovida.getId(), ultimaPecaMovida.getCoordenadas());
+     relatorioJogadas.push(new JogadaParaRelatorio(jogadaBot, "Bot"));
+
     if ((ultimaPecaMovida.getId() >= 0 && ultimaPecaMovida.getId() <= 11) && 
          ultimaPecaMovida.getCoordenadas().getX() == 7) {
         ultimaPecaMovida.setRainha(true);
     }
-
+    
     if (jogo.getJogador1().getPilhaPecas().getTam() == 12) {
         ranking.registrarVitoria(jogo.getJogador1().getNome());
         ranking.registrarDerrota(jogo.getJogador2().getNome());
