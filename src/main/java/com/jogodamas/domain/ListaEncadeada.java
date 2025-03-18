@@ -59,5 +59,17 @@ class ListaEncadeada<V> {
         }
         atual.valor = valor;
     }
+
+    public V[] paraArray(Class<V> clazz) {
+        @SuppressWarnings("unchecked")
+        V[] array = (V[]) java.lang.reflect.Array.newInstance(clazz, tamanho);
+        NoLista<V> atual = cabeca;
+        int i = 0;
+        while (atual != null) {
+            array[i++] = atual.valor;
+            atual = atual.proximo;
+        }
+        return array;
+    }
   }
   
